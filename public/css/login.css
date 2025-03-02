@@ -1,0 +1,96 @@
+@import url('global.css');
+
+.page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--muted-coral);
+  padding: 2rem;
+}
+
+.login-wrapper {
+  width: 40%;
+  padding: 3rem;
+  border-radius: 2rem;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.login-title h1 {
+  font-family: "Orbit", sans-serif;
+  font-size: 3rem;
+  color: var(--black);
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-family: "Orbit", sans-serif;
+  font-size: 1.2rem;
+  color: var(--black);
+}
+
+.form-group input {
+  padding: 1rem;
+  border: 2px solid var(--black);
+  border-radius: 1rem;
+  font-family: "Orbit", sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--apricot-cream);
+}
+
+.cta-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.cta-btn {
+  padding: 1rem 2rem;
+  background-color: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: 30px;
+  font-family: "Orbit", sans-serif;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+  background-color: var(--apricot-cream);
+  color: var(--black);
+}
+
+.register-link p {
+  font-family: "Orbit", sans-serif;
+  text-align: center;
+}
+
+.register-link a {
+  color: var(--muted-coral);
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
