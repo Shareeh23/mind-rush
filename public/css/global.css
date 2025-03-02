@@ -13,12 +13,22 @@
   --muted-coral: #E5A17C; /* Light Grey */
   --black: #3A3A3A; /* Dark Grey for text */
   --purple: #6450BC; /* Red */
+  --bright-blue: #0066FF;
 }
 
 
 a {
   text-decoration: none;
 }
+
+/*
+  .permanent-marker-regular {
+  font-family: "Permanent Marker", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+*/
 
 /*
   .orbit-regular {
