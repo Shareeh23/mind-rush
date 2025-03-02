@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbit&family=Permanent+Marker&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --white: #F7F7F7; /* Blue */
+  --apricot-cream: #FDE3D0; /* Green */
+  --muted-coral: #E5A17C; /* Light Grey */
+  --black: #3A3A3A; /* Dark Grey for text */
+  --purple: #6450BC; /* Red */
+}
+
+
+a {
+  text-decoration: none;
+}
+
+/*
+  .orbit-regular {
+    font-family: "Orbit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+*/
+
+/* .exo-2-<uniquifier> {
+  font-family: "Exo 2", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
+

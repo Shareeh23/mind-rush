@@ -1,0 +1,168 @@
+@import url('global.css');
+
+body {
+  font-family: "Orbit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--white);
+  padding: 7.5rem 3.75rem;
+}
+
+/* Page Wrapper */
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  top: 0;
+  left: 10%; 
+  width: 20rem;  
+  height: 20rem; 
+  border-radius: 50%; 
+  background: linear-gradient(90deg, #E5A17C 22%, #E6985F 61%);
+  z-index: 1;
+  opacity: 0; 
+  pointer-events: none;
+  transition: opacity 3s ease-in;
+}
+
+.circle.show {
+  opacity: 1;
+}
+
+/* Brain SVG (Starts Center, Slides Left) */
+.brain {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideBrain 2s ease forwards;
+  z-index: 2;
+}
+
+.brain svg {
+  width: 38.25rem;
+  height: 31.25rem;
+}
+
+@keyframes slideBrain {
+  0% {
+    left: 50%;
+  }
+  100% {
+    left: 15rem; 
+  }
+}
+
+.menu-bar.show {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.menu-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  width: 45rem;
+  height: 100%;
+  border-radius: 2rem;
+  z-index: 10;
+  gap: 2rem;
+  background-color: var(--muted-coral);
+  opacity: 0;
+}
+
+/* Menu Title with Sliding Effect */
+.menu-title {
+  text-align: center;
+  font-size: 2rem;
+  color: var(--white);
+  opacity: 0;
+  transform: translateY(-100%);
+  animation: slideTitle 2s ease forwards 3s; /* Delayed start */
+}
+
+@keyframes slideTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-links ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-links a {
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15rem;
+  height: 3.75rem;
+  border-radius: 1.875rem;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.menu-links a:hover {
+  background-color: var(--apricot-cream);
+  color: var(--black);
+}
+
+.menu-links a.active {
+  background-color: var(--apricot-cream);
+  color: var(--black);
+}
+
+.menu-links a.active:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .brain img {
+    width: 25rem;
+    height: 20rem;
+  }
+
+  .menu-bar {
+    width: 30rem;
+    height: 25rem;
+  }
+
+  .menu-links a {
+    width: 12rem;
+    height: 3rem;
+    font-size: 1.2rem;
+  }
+}
