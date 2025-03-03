@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../public/css/game.css">
   <link rel="icon" href="../public/icons/icon.png" type="image/png">
-  <script src="../public/js/typingGame.js" defer></script>
+  <link rel="stylesheet" href="../public/css/game.css">
+  <link rel="stylesheet" href="../public/css/tic-tac-toe.css">
+  <script src="../public/js/ticTacToe.js" defer></script>
   <title>Game Title</title>
 </head>
 <body>
@@ -30,20 +31,33 @@
       </div>
       <div class="central-layout">
         <div class="game">
-          <div class="container">
-            <div class="quote-display" id="quoteDisplay"></div>
-            <textarea id="quoteInput" class="quote-input" placeholder="Start typing..." autofocus></textarea>
-          </div>  
+            <table>
+              <tr>
+                <td class="cell" id="0"></td>
+                <td class="cell" id="1"></td>
+                <td class="cell" id="2"></td>
+              </tr>
+              <tr>
+                <td class="cell" id="3"></td>
+                <td class="cell" id="4"></td>
+                <td class="cell" id="5"></td>
+              </tr>
+              <tr>
+                <td class="cell" id="6"></td>
+                <td class="cell" id="7"></td>
+                <td class="cell" id="8"></td>
+              </tr>
+            </table> 
+          </div>
+        </div>
+        <div class="right-layout">
+          <div class="computer-response-text">Well, well, look who finally made it!  Guess you’re not as slow as we thought... for now.</div>
+          <div class="computer-response-image"><img src="../public/svgs/surprise.svg" alt=""></div>
         </div>
       </div>
-      <div class="right-layout">
-        <div class="computer-response-text">Well, well, look who finally made it!  Guess you’re not as slow as we thought... for now.</div>
-        <div class="computer-response-image"><img src="../public/svgs/surprise.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="cta-btn-wrapper">
-      <a href="#" class="cta-btn disabled">Next Game</a>
-      <a href="../views/login.html" class="cta-btn">Login</a>
+      <div class="cta-btn-wrapper">
+        <a href="#" class="cta-btn disabled">Next Game</a>
+        <a href="../views/login.html" class="cta-btn">Login</a>
       <a href="../index.html" class="cta-btn">Exit</a>
     </div>
   </div>
