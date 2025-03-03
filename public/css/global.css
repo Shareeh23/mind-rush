@@ -8,11 +8,11 @@
 }
 
 :root {
-  --white: #F7F7F7; /* Blue */
-  --apricot-cream: #FDE3D0; /* Green */
-  --muted-coral: #E5A17C; /* Light Grey */
-  --black: #3A3A3A; /* Dark Grey for text */
-  --purple: #6450BC; /* Red */
+  --white: #F7F7F7;
+  --apricot-cream: #FDE3D0;
+  --muted-coral: #E5A17C; 
+  --black: #3A3A3A; 
+  --purple: #6450BC;
   --bright-blue: #0066FF;
   --rust: #B85C38;  
 }

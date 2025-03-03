@@ -1,0 +1,28 @@
+{
+  "name": "mind-rush",
+  "version": "1.0.0",
+  "description": "A cozy game that tests cognitive skills under time pressure",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shareeh23/mind-rush.git"
+  },
+  "author": "Shareeh Rayisoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shareeh23/mind-rush/issues"
+  },
+  "homepage": "https://github.com/Shareeh23/mind-rush#readme",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

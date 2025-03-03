@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/signup.css">
+  <link rel="icon" href="icons/icon.png" type="image/png">
+  <title>Sign Up - Mind-Rush</title>
+</head>
+<body>
+  <div class="page-wrapper">
+    <div class="signup-wrapper">
+      
+      <!-- First Row: Title -->
+      <div class="signup-title">
+        <h1>Sign Up</h1>
+      </div>
+
+      <div class="vertical-line"></div>
+      
+      <!-- Second Row: Form Fields -->
+      <div class="signup-form-wrapper">
+        <form class="signup-form" action="#" method="POST">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+        </form>
+      </div>
+
+      <div class="vertical-line"></div>
+      
+      <!-- Third Row: Buttons -->
+      <div class="btn-wrapper">
+        <button type="submit" class="cta-btn">Sign Up</button>
+        <p>Sign Up with Google:</p>
+        <a href="#" class="cta-btn-google"><img src="icons/google-icon.png" alt=""></a>
+        <p>If you already have an account:</p>
+        <a href="/login" class="cta-btn">Login</a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
