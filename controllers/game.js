@@ -2,6 +2,10 @@ exports.getIndex = (req, res, next) => {
   res.render('../index');
 };
 
+exports.getLeaderboard = (req, res, next)=> {
+  res.render('leaderboard');
+};
+
 exports.getTicTacToe = (req, res, next) => {
   res.render('tic-tac-toe', {
     path: 'tic-tac-toe',

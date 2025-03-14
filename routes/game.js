@@ -5,6 +5,8 @@ const gameController = require('../controllers/game');
 
 router.get('/', gameController.getIndex);
 
+router.get('/leaderboard', gameController.getLeaderboard);
+
 router.get('/tic-tac-toe', gameController.getTicTacToe);
 
 router.get('/memory-match', gameController.getMemoryMatch);
