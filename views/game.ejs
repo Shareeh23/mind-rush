@@ -1,46 +1,108 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="icons/icon.png" type="image/png">
-    <link rel="stylesheet" href="css/game.css">
-    <link rel="stylesheet" href="<%= cssFile %>">
-    <title><%= pageTitle %></title>
-  </head>
-  <body>
-    <div class="page-wrapper">
-      <div class="title-wrapper">
-        <h1><%= heading %></h1>
-      </div>
-      <div class="center-wrapper">
-        <div class="left-layout">
-          <div class="timer-box">
-            <div class="timer">
-              <div class="hours">00</div>
-              <div class="dot">:</div>
-              <div class="minutes">03</div>
-              <div class="dot">:</div>
-              <div class="seconds">29</div>
-            </div>
+<%- include('./includes/head.ejs') %>
+
+<%- include('./includes/body.ejs') %>
+
+  <div class="game-play-hint">
+    <p class="hint-text"><%= hintText %></p>
+  </div>
+</div>
+
+<div class="central-layout">
+  <div class="game">
+    <% if (gameType === 'memory-match') { %>
+      <section class="memory-game">
+        <% gameCards.forEach(card => { %>
+          <div class="memory-card" data-item="<%= card.name %>">
+            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
+            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
           </div>
-          <div class="game-play-hint">
-            <p class="hint-text"><%= hintText %></p>
+          <div class="memory-card" data-item="<%= card.name %>">
+            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
+            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
           </div>
-        </div>
-        <div class="central-layout">
-          <div class="game">
-                                  
-          </div>
-        </div>
-        <div class="right-layout">
-          <div class="computer-response-text"><%= computerResponse %></div>
-          <div class="computer-response-image"><img src="<%= svgPath %>" alt=""></div>
-        </div>
+        <% }); %>
+      </section>
+    <% } else if (gameType === 'speed-typing') { %>
+      <div class="container">
+        <div class="quote-display" id="quoteDisplay"></div>
+        <textarea id="quoteInput" class="quote-input" placeholder="Start typing..." autofocus></textarea>
       </div>
-      <div class="cta-btn-wrapper">
-        <%- include('./includes/cta-btn') %>
-      </div>
-    </div>
-  </body>
-  </html>
+    <% } else if (gameType === 'tic-tac-toe') { %>
+      <table>
+        <tr>
+          <td class="cell" id="0"></td>
+          <td class="cell" id="1"></td>
+          <td class="cell" id="2"></td>
+        </tr>
+        <tr>
+          <td class="cell" id="3"></td>
+          <td class="cell" id="4"></td>
+          <td class="cell" id="5"></td>
+        </tr>
+        <tr>
+          <td class="cell" id="6"></td>
+          <td class="cell" id="7"></td>
+          <td class="cell" id="8"></td>
+        </tr>
+      </table>
+    <% } %>
+  </div>
+</div>
+
+<div class="right-layout">
+  <div class="computer-response-text"><%= computerResponseInitial %></div>
+  <div class="computer-response-image"><img src="<%= svgPathInitial %>" alt=""></div>
+</div>
+
+</div>
+<div class="cta-btn-wrapper">
+  <%- include('./includes/cta-btn') %>
+</div>
+</div>
+
+<script>
+function updateUIBasedOnResult() {
+  const result = localStorage.getItem('result');
+  const responseText = document.querySelector('.computer-response-text');
+  const responseImage = document.querySelector('.computer-response-image img');
+  const proceedBtn = document.querySelector('#proceed-btn');
+  console.log(proceedBtn);
+  
+  if (result === 'win' || result === 'tie') {
+    responseText.innerText = "<%= computerResponseWin %>";
+    responseImage.src = "<%= svgPathWin %>";
+    proceedBtn.classList.remove('disabled');
+    proceedBtn.href = "<%= pathWin %>";
+  } else if (result === 'lose') {
+    responseText.innerText = "<%= computerResponseLose %>";
+    responseImage.src = "<%= svgPathLose %>";
+    proceedBtn.classList.remove('disabled');
+    proceedBtn.href = "<%= pathLose %>";
+    proceedBtn.textContent = 'Restart';
+  } else {
+    responseText.innerText = "<%= computerResponseInitial %>";
+    responseImage.src = "<%= svgPathInitial %>";
+    proceedBtn.classList.add('disabled');
+    proceedBtn.href = "<%= pathWin %>";
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Your existing code for DOM loaded...
+  updateUIBasedOnResult();
+  
+  // Add event listener to the exit button
+  const exitButton = document.querySelector('#clicker');
+  if (exitButton) {
+    exitButton.addEventListener('click', function() {
+      // Clear localStorage when exit button is clicked
+      localStorage.removeItem('result');
+      console.log('Game state cleared');
+    });
+  }
+});
+
+</script>
+
+</body>
+</html>

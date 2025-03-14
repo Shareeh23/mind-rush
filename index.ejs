@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" href="icons/icon.png" type="image/png" />
     <script src="js/index.js" defer></script>
+    <script src="js/timer.js" defer></script>
     <title>Mind-Rush</title>
   </head>
   <body>
@@ -807,7 +808,7 @@
         </div>
         <div class="menu-links">
           <ul>
-            <li><a href="/tic-tac-toe" class="active">Start Game</a></li>
+            <li><a href="/tic-tac-toe" id="start-game" class="active">Start Game</a></li>
             <li><a href="/leaderboard">Leaderboard</a></li>
             <% if(!isAuthenticated) { %>
             <li><a href="/login">Login</a></li>

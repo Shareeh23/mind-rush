@@ -7,10 +7,6 @@ router.get('/', gameController.getIndex);
 
 router.get('/leaderboard', gameController.getLeaderboard);
 
-router.get('/tic-tac-toe', gameController.getTicTacToe);
-
-router.get('/memory-match', gameController.getMemoryMatch);
-
-router.get('/speed-typing', gameController.getSpeedTyping);
+router.get('/:gameType', gameController.getGamePage); 
 
 module.exports = router;
