@@ -28,8 +28,30 @@ exports.getGamePage = (req, res, next) => {
         svgPathInitial: 'svgs/confidence.svg',
         svgPathWin: 'svgs/fluke.svg',
         svgPathLose: 'svgs/mockery.svg',
-        pathWin: '/memory-match',
+        pathWin: '/banana-math',
         pathLose: '/tic-tac-toe',
+      };
+      break;
+
+    case 'banana-math':
+      gameConfig = {
+        cssFile: 'css/banana-math.css',
+        scriptFile: 'js/bananaMath.js',
+        pageTitle: 'Math',
+        gameType: 'banana-math',
+        heading: 'Tier 02: Math Game',
+        hintText:
+          `Don't rush, but don't wait! The timer is your friend—answer quickly but think carefully! Every second counts in the Banana Challenge. 🍌`,
+        computerResponseInitial:
+          'Big man ting yeah, you know Math G?!',
+        computerResponseWin: 'You think you’re smart bro, wait for the next one yeah!',
+        computerResponseLose:
+          'Bananas are smarter than you right now!',
+        svgPathInitial: 'svgs/greeting.svg',
+        svgPathWin: 'svgs/rage.svg',
+        svgPathLose: 'svgs/shrug.svg',
+        pathWin: '/memory-match',
+        pathLose: '/banana-math',
       };
       break;
 
@@ -39,7 +61,7 @@ exports.getGamePage = (req, res, next) => {
         scriptFile: 'js/memoryMatch.js',
         pageTitle: 'Memory Match',
         gameType: 'memory-match',
-        heading: 'Tier 02: Memory Match',
+        heading: 'Tier 03: Memory Match',
         hintText:
           'Flip, focus, and find the pairs! Every move counts, so keep your memory sharp and match fast before time runs out!',
         computerResponseInitial:
@@ -84,7 +106,7 @@ exports.getGamePage = (req, res, next) => {
         svgPathWin: 'svgs/surprise.svg',
         svgPathLose: 'svgs/angry.svg',
         pathWin: '/',
-        pathLose: null
+        pathLose: null,
       };
       break;
 

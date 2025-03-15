@@ -9,25 +9,7 @@
 
 <div class="central-layout">
   <div class="game">
-    <% if (gameType === 'memory-match') { %>
-      <section class="memory-game">
-        <% gameCards.forEach(card => { %>
-          <div class="memory-card" data-item="<%= card.name %>">
-            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
-            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
-          </div>
-          <div class="memory-card" data-item="<%= card.name %>">
-            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
-            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
-          </div>
-        <% }); %>
-      </section>
-    <% } else if (gameType === 'speed-typing') { %>
-      <div class="container">
-        <div class="quote-display" id="quoteDisplay"></div>
-        <textarea id="quoteInput" class="quote-input" placeholder="Start typing..." autofocus></textarea>
-      </div>
-    <% } else if (gameType === 'tic-tac-toe') { %>
+    <% if (gameType === 'tic-tac-toe') { %>
       <table>
         <tr>
           <td class="cell" id="0"></td>
@@ -45,6 +27,33 @@
           <td class="cell" id="8"></td>
         </tr>
       </table>
+    <% } else if (gameType === 'banana-math') { %>
+      <div class="banana-puzzle-container">
+        <div id="puzzleDisplay" class="puzzle-display"></div>
+        <div class="puzzle-controls">
+          <input type="number" id="solutionInput" class="solution-input" placeholder="Enter solution..." />
+          <button id="submitButton" class="submit-button">Submit Answer</button>
+        </div>
+        <div id="messageDisplay" class="message-display"></div>
+      </div>
+    <% } else if (gameType === 'memory-match') { %>
+      <section class="memory-game">
+        <% gameCards.forEach(card => { %>
+          <div class="memory-card" data-item="<%= card.name %>">
+            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
+            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
+          </div>
+          <div class="memory-card" data-item="<%= card.name %>">
+            <img class="front-face" src="<%= card.image %>" alt="<%= card.name %>" />
+            <img class="back-face" src="svgs/robot-arm.svg" alt="robot-arm" />
+          </div>
+        <% }); %>
+      </section>
+    <% } else if (gameType === 'speed-typing') { %>
+      <div class="container">
+        <div class="quote-display" id="quoteDisplay"></div>
+        <textarea id="quoteInput" class="quote-input" placeholder="Start typing..." autofocus></textarea>
+      </div>
     <% } %>
   </div>
 </div>
