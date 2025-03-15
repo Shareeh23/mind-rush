@@ -1,4 +1,4 @@
-/* // Select the "Exit" button
+// Select the "Exit" button
 const exitButton = document.getElementById('clicker');
 // Select necessary DOM elements
 const hoursElem = document.querySelector('.hours');
@@ -40,7 +40,7 @@ function startStopwatch() {
       // Update the stopwatch display
       updateStopwatch();
     }, 1000);
-  }, 2000);
+  });
 }
 
 // Start the stopwatch after a 2-second delay when the page is loaded
@@ -62,4 +62,3 @@ if (exitButton) {
     updateStopwatch(); // Update the UI to show 00:00:00
   });
 }
- */

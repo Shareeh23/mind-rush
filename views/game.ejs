@@ -73,6 +73,7 @@ function updateUIBasedOnResult() {
     responseImage.src = "<%= svgPathWin %>";
     proceedBtn.classList.remove('disabled');
     proceedBtn.href = "<%= pathWin %>";
+    proceedBtn.textContent = 'Next Game'
   } else if (result === 'lose') {
     responseText.innerText = "<%= computerResponseLose %>";
     responseImage.src = "<%= svgPathLose %>";
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Add event listener to the exit button
   const exitButton = document.querySelector('#clicker');
+  const proceedBtn = document.querySelector('#proceed-btn');
   if (exitButton) {
     exitButton.addEventListener('click', function() {
       // Clear localStorage when exit button is clicked
@@ -100,6 +102,20 @@ document.addEventListener('DOMContentLoaded', function() {
       console.log('Game state cleared');
     });
   }
+
+  if(proceedBtn) {
+    proceedBtn.addEventListener('click', function() {
+      localStorage.removeItem('result');
+      console.log('Game state cleared');
+    });
+  }
+
+});
+
+// Listen for gameOver event from the game logic
+document.addEventListener('gameOver', function(e) {
+  console.log('Game over event received:', e.detail.result);
+  updateUIBasedOnResult();
 });
 
 </script>

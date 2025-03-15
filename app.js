@@ -53,10 +53,9 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.use(gameRoutes);
-app.use(userRoutes);
 app.use(authRoutes);
+app.use(userRoutes);
+app.use(gameRoutes);
 
 mongoose
   .connect(MONGODB_URI)
