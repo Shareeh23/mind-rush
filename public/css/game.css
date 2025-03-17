@@ -174,4 +174,5 @@ h1{
   border: 2px solid var(--apricot-cream);
   color: var(--apricot-cream);
   cursor: not-allowed;
+  pointer-events: none;
 }

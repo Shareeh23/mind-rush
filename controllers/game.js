@@ -6,19 +6,44 @@ exports.getLeaderboard = (req, res, next) => {
   res.render('leaderboard');
 };
 
-// In your gameController
+/* exports.postLeaderboard = (req, res, next) => {
+
+}; */
+
 exports.getGamePage = (req, res, next) => {
+  const user = req.user;
+  console.log(user);
   const { gameType } = req.params; // Extract gameType from URL parameter
   let gameConfig = {};
 
   switch (gameType) {
+    case 'banana-math':
+      gameConfig = {
+        cssFile: 'css/banana-math.css',
+        scriptFile: 'js/bananaMath.js',
+        pageTitle: 'Banana Math',
+        gameType: 'banana-math',
+        heading: 'Tier 01: Banana Math',
+        hintText: `Don't rush, but don't wait! The timer is your friend—answer quickly but think carefully! Every second counts in the Banana Math Challenge. 🍌`,
+        computerResponseInitial: 'Big man ting yeah, you know Math G?!',
+        computerResponseWin:
+          'You think you’re smart bro, wait for the next one yeah!',
+        computerResponseLose: 'Bananas are smarter than you right now!',
+        svgPathInitial: 'svgs/greeting.svg',
+        svgPathWin: 'svgs/rage.svg',
+        svgPathLose: 'svgs/shrug.svg',
+        pathWin: '/tic-tac-toe',
+        pathLose: '/banana-math',
+      };
+      break;
+
     case 'tic-tac-toe':
       gameConfig = {
         cssFile: 'css/tic-tac-toe.css',
         scriptFile: 'js/ticTacToe.js',
         pageTitle: 'Tic-Tac-Toe Game',
         gameType: 'tic-tac-toe',
-        heading: 'Tier 01: Tic-Tac-Toe',
+        heading: 'Tier 02: Tic-Tac-Toe',
         hintText:
           'Think fast, play smart! Outsmart your opponent before the grid fills up. Every move brings you closer to victory... or defeat!',
         computerResponseInitial:
@@ -28,30 +53,8 @@ exports.getGamePage = (req, res, next) => {
         svgPathInitial: 'svgs/confidence.svg',
         svgPathWin: 'svgs/fluke.svg',
         svgPathLose: 'svgs/mockery.svg',
-        pathWin: '/banana-math',
-        pathLose: '/tic-tac-toe',
-      };
-      break;
-
-    case 'banana-math':
-      gameConfig = {
-        cssFile: 'css/banana-math.css',
-        scriptFile: 'js/bananaMath.js',
-        pageTitle: 'Math',
-        gameType: 'banana-math',
-        heading: 'Tier 02: Math Game',
-        hintText:
-          `Don't rush, but don't wait! The timer is your friend—answer quickly but think carefully! Every second counts in the Banana Challenge. 🍌`,
-        computerResponseInitial:
-          'Big man ting yeah, you know Math G?!',
-        computerResponseWin: 'You think you’re smart bro, wait for the next one yeah!',
-        computerResponseLose:
-          'Bananas are smarter than you right now!',
-        svgPathInitial: 'svgs/greeting.svg',
-        svgPathWin: 'svgs/rage.svg',
-        svgPathLose: 'svgs/shrug.svg',
         pathWin: '/memory-match',
-        pathLose: '/banana-math',
+        pathLose: '/tic-tac-toe',
       };
       break;
 
@@ -105,8 +108,8 @@ exports.getGamePage = (req, res, next) => {
         svgPathInitial: 'svgs/bipolar.svg',
         svgPathWin: 'svgs/surprise.svg',
         svgPathLose: 'svgs/angry.svg',
-        pathWin: '/',
-        pathLose: null,
+        pathWin: '/leaderboard',
+        pathLose: null
       };
       break;
 

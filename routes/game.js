@@ -7,6 +7,8 @@ router.get('/', gameController.getIndex);
 
 router.get('/leaderboard', gameController.getLeaderboard);
 
+// router.post('/save-leaderboard', gameController.postLeaderboard)
+
 router.get('/:gameType', gameController.getGamePage); 
 
 module.exports = router;

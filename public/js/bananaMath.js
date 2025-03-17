@@ -1,5 +1,5 @@
 // Constants and DOM elements
-const API_URL = 'https://www.sanfoh.com/uob/banana/api.php'; // Adjusted API URL if necessary
+const API_URL = 'https://marcconrad.com/uob/banana/api.php';
 const puzzleDisplay = document.getElementById('puzzleDisplay');
 const solutionInput = document.getElementById('solutionInput');
 const submitButton = document.getElementById('submitButton');
@@ -10,13 +10,6 @@ const MAX_PUZZLES = 3;
 
 // Initialize the game
 function initGame() {
-  console.log("Initializing banana math game...");
-
-  if (!puzzleDisplay || !solutionInput || !submitButton) {
-    console.error("Essential DOM elements not found");
-    return;
-  }
-
   localStorage.removeItem('result');
 
   // Set up event listeners
@@ -33,8 +26,6 @@ function initGame() {
 // Fetch a new puzzle
 async function fetchNewPuzzle() {
   try {
-    console.log("Fetching new puzzle...");
-    puzzleDisplay.innerHTML = '<p>Loading puzzle...</p>';
     solutionInput.value = '';
 
     if (messageDisplay) {
@@ -42,7 +33,7 @@ async function fetchNewPuzzle() {
     }
 
     const timestamp = Date.now();
-    const response = await fetch(`${API_URL}?cb=${timestamp}`);
+    const response = await fetch(`${API_URL}?cb=${timestamp}`); // append the timestamp to prevent caching issues
 
     if (!response.ok) {
       throw new Error(`Network error: ${response.status}`);
@@ -59,38 +50,25 @@ async function fetchNewPuzzle() {
 
     // Create image element
     const img = document.createElement('img');
-    img.src = data.question; // Adjusted from data.url to data.question
+    img.src = data.question;
     img.alt = "Puzzle Image";
     img.className = "puzzle-image";
     img.style.maxWidth = "100%";
+    img.style.height = "auto";
     img.style.display = "block";
 
     img.onload = function() {
-      console.log("Puzzle image loaded");
-      puzzleDisplay.innerHTML = '';
+      puzzleDisplay.textContent = '';
       puzzleDisplay.appendChild(img);
 
       if (messageDisplay) {
-        messageDisplay.textContent = `Puzzle ${puzzleCount + 1} of ${MAX_PUZZLES}`;
+        messageDisplay.textContent = `Question ${puzzleCount + 1} of ${MAX_PUZZLES}`;
       }
 
       solutionInput.focus();
     };
-
-    img.onerror = function() {
-      console.error("Failed to load image:", data.question);
-      puzzleDisplay.innerHTML = `
-        <p>Failed to load puzzle.</p>
-        <button onclick="fetchNewPuzzle()" class="submit-button">Try Again</button>
-      `;
-    };
-
   } catch (error) {
     console.error("Error fetching puzzle:", error);
-    puzzleDisplay.innerHTML = `
-      <p>Error loading puzzle: ${error.message}</p>
-      <button onclick="fetchNewPuzzle()" class="submit-button">Try Again</button>
-    `;
   }
 }
 
@@ -133,11 +111,13 @@ function checkSolution() {
     if (messageDisplay) {
       messageDisplay.textContent = 'Incorrect. Try again!';
     }
+
+    document.dispatchEvent(new CustomEvent('gameOver', { detail: { result: 'lose' } }));
+
     solutionInput.value = '';
     solutionInput.focus();
   }
 }
-
 
 // End the game
 function endGame() {
@@ -146,16 +126,16 @@ function endGame() {
   localStorage.setItem('result', 'win');
 
   document.dispatchEvent(new CustomEvent('gameOver', { detail: { result: 'win' } }));
-
+  
   puzzleDisplay.innerHTML = `
     <div class="completion-message">
       <h2>Congratulations!</h2>
-      <p>You've solved all the puzzles!</p>
+      <p>You're Math Wizard!</p>
     </div>
   `;
 
   if (messageDisplay) {
-    messageDisplay.textContent = 'All puzzles completed!';
+    messageDisplay.textContent = 'All questions are completed!';
   }
 
   solutionInput.disabled = true;

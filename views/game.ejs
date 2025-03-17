@@ -31,7 +31,7 @@
       <div class="banana-puzzle-container">
         <div id="puzzleDisplay" class="puzzle-display"></div>
         <div class="puzzle-controls">
-          <input type="number" id="solutionInput" class="solution-input" placeholder="Enter solution..." />
+          <input type="number" id="solutionInput" class="solution-input" placeholder="Enter..." />
           <button id="submitButton" class="submit-button">Submit Answer</button>
         </div>
         <div id="messageDisplay" class="message-display"></div>
@@ -75,7 +75,6 @@ function updateUIBasedOnResult() {
   const responseText = document.querySelector('.computer-response-text');
   const responseImage = document.querySelector('.computer-response-image img');
   const proceedBtn = document.querySelector('#proceed-btn');
-  console.log(proceedBtn);
   
   if (result === 'win' || result === 'tie') {
     responseText.innerText = "<%= computerResponseWin %>";
@@ -98,15 +97,12 @@ function updateUIBasedOnResult() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Your existing code for DOM loaded...
   updateUIBasedOnResult();
   
-  // Add event listener to the exit button
   const exitButton = document.querySelector('#clicker');
   const proceedBtn = document.querySelector('#proceed-btn');
   if (exitButton) {
     exitButton.addEventListener('click', function() {
-      // Clear localStorage when exit button is clicked
       localStorage.removeItem('result');
       console.log('Game state cleared');
     });

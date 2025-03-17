@@ -9,7 +9,7 @@ quoteInputElement.addEventListener('input', () => {
   const arrayQuote = quoteDisplayElement.querySelectorAll('span');
   const arrayValue = quoteInputElement.value.split('');
   let correct = true;
-  
+
   arrayQuote.forEach((characterSpan, index) => {
     const character = arrayValue[index];
     if (character == null) {
@@ -27,10 +27,9 @@ quoteInputElement.addEventListener('input', () => {
   });
 
   if (correct) {
-    if (quoteCount < 2) { // We've completed quotes 0 and 1, need one more
+    if (quoteCount < 2) {
       renderNewQuote();
     } else {
-      // We've completed all 3 quotes
       endGame();
     }
   }
@@ -38,30 +37,30 @@ quoteInputElement.addEventListener('input', () => {
 
 function getRandomQuote() {
   return fetch(RANDOM_QUOTE_API_URL)
-    .then(response => response.json())
-    .then(data => data.content);
+    .then((response) => response.json())
+    .then((data) => data.content);
 }
 
 async function renderNewQuote() {
   // Increment the quote count first
   quoteCount++;
-  
+
   // Now check if we've already completed 3 quotes
   if (quoteCount > 3) {
     endGame();
     return; // No more quotes should be generated
   }
-  
+
   const quote = await getRandomQuote();
   quoteDisplayElement.innerHTML = '';
-  quote.split('').forEach(character => {
+  quote.split('').forEach((character) => {
     const characterSpan = document.createElement('span');
     characterSpan.innerText = character;
     quoteDisplayElement.appendChild(characterSpan);
   });
-  
+
   quoteInputElement.value = null;
-  
+
   if (intervalId) clearInterval(intervalId); // Clear previous interval if any
   startTimer();
   quoteCount++; // Increment the quote count
@@ -82,18 +81,21 @@ function getTimerTime() {
 
 function endGame() {
   clearInterval(intervalId); // Stop the timer
-  
+
   // Set 'win' result in localStorage
   localStorage.setItem('result', 'win');
-  
+
   // Dispatch gameOver event to trigger UI updates
-  const gameOverEvent = new CustomEvent('gameOver', { detail: { result: 'win' } });
+  const gameOverEvent = new CustomEvent('gameOver', {
+    detail: { result: 'win' },
+  });
   document.dispatchEvent(gameOverEvent);
-  
+
   console.log('Game over! Result saved: win');
-  
+
   // Disable input to prevent further typing
   quoteInputElement.disabled = true;
+
 }
 
 // Start with the first quote
