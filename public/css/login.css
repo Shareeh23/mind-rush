@@ -81,6 +81,12 @@
   color: var(--black);
 }
 
+.register-link {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .register-link p {
   font-family: "Orbit", sans-serif;
   text-align: center;
