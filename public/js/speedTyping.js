@@ -2,8 +2,8 @@ const RANDOM_QUOTE_API_URL = 'http://api.quotable.io/random';
 const quoteDisplayElement = document.getElementById('quoteDisplay');
 const quoteInputElement = document.getElementById('quoteInput');
 const timerElement = document.getElementById('timer');
+
 let quoteCount = 0; // Counter to track number of quotes
-let intervalId = null; // Store the interval ID to stop it later
 
 quoteInputElement.addEventListener('input', () => {
   const arrayQuote = quoteDisplayElement.querySelectorAll('span');
@@ -27,7 +27,8 @@ quoteInputElement.addEventListener('input', () => {
   });
 
   if (correct) {
-    if (quoteCount < 2) {
+    quoteCount++;
+    if (quoteCount < 1) {
       renderNewQuote();
     } else {
       endGame();
@@ -42,17 +43,9 @@ function getRandomQuote() {
 }
 
 async function renderNewQuote() {
-  // Increment the quote count first
-  quoteCount++;
-
-  // Now check if we've already completed 3 quotes
-  if (quoteCount > 3) {
-    endGame();
-    return; // No more quotes should be generated
-  }
-
   const quote = await getRandomQuote();
   quoteDisplayElement.innerHTML = '';
+
   quote.split('').forEach((character) => {
     const characterSpan = document.createElement('span');
     characterSpan.innerText = character;
@@ -60,43 +53,73 @@ async function renderNewQuote() {
   });
 
   quoteInputElement.value = null;
-
-  if (intervalId) clearInterval(intervalId); // Clear previous interval if any
-  startTimer();
-  quoteCount++; // Increment the quote count
-}
-
-let startTime;
-function startTimer() {
-  timerElement.innerText = 0;
-  startTime = new Date();
-  intervalId = setInterval(() => {
-    timerElement.innerText = getTimerTime();
-  }, 1000);
-}
-
-function getTimerTime() {
-  return Math.floor((new Date() - startTime) / 1000);
 }
 
 function endGame() {
-  clearInterval(intervalId); // Stop the timer
+  // Get the final time from localStorage
+  const finalTime = parseInt(localStorage.getItem('stopwatchTime')) || 0;
+  console.log(typeof finalTime);
 
-  // Set 'win' result in localStorage
+  // Save result to localStorage
   localStorage.setItem('result', 'win');
 
-  // Dispatch gameOver event to trigger UI updates
+  // Dispatch gameOver event
   const gameOverEvent = new CustomEvent('gameOver', {
-    detail: { result: 'win' },
+    detail: {
+      result: 'win',
+      finalTime: +finalTime,
+    },
   });
   document.dispatchEvent(gameOverEvent);
 
-  console.log('Game over! Result saved: win');
+  console.log('Game over! Result saved: win, Time:', finalTime);
 
   // Disable input to prevent further typing
   quoteInputElement.disabled = true;
 
+  // Send data to leaderboard
+  sendTimeToLeaderboard(finalTime);
 }
+
+function sendTimeToLeaderboard(finalTime) {
+  fetch('/leaderboard', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      time: finalTime,
+    }),
+    credentials: 'include', // Important to include cookies/session
+    // Add this to follow redirects automatically
+    redirect: 'follow'
+  })
+    .then((response) => {
+      // Check if the response is a redirect
+      if (response.redirected) {
+        window.location.href = response.url;
+        return { success: true, redirected: true };
+      }
+      
+      // If it's not a redirect but has an error status
+      if (!response.ok) {
+        throw new Error('Server returned ' + response.status);
+      }
+      
+      // If it's a successful JSON response
+      return response.json();
+    })
+    .then((data) => {
+      console.log('Leaderboard entry sent successfully', data);
+    })
+    .catch((error) => {
+      console.error('Error submitting leaderboard entry:', error);
+      alert(
+        'Failed to submit your score. Please try again or check if you are logged in.'
+      );
+    });
+}
+
 
 // Start with the first quote
 renderNewQuote();

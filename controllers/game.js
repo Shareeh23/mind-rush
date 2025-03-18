@@ -1,3 +1,5 @@
+const Leaderboard = require('../models/leaderboard');
+
 exports.getIndex = (req, res, next) => {
   return res.render('../index');
 };
@@ -6,9 +8,34 @@ exports.getLeaderboard = (req, res, next) => {
   return res.render('leaderboard');
 };
 
-/* exports.postLeaderboard = (req, res, next) => {
+exports.postLeaderboard = async (req, res, next) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+    console.log(typeof req.body.time); // Should output 'string' or 'number'
+    const time = parseInt(req.body.time, 10);
+    const userId = req.session.user._id; // Get user ID from session
 
-}; */
+    console.log(time, userId);
+    console.log(typeof time);
+
+    const leaderboardEntry = new Leaderboard({
+      userId: userId,
+      time: time,
+    });
+
+    console.log(leaderboardEntry);
+
+    await leaderboardEntry.save(); // Save to database
+
+    res.redirect('/leaderboard'); // Redirect to leaderboard page
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+};
+
 
 exports.getGamePage = (req, res, next) => {
   const user = req.user;
@@ -117,5 +144,5 @@ exports.getGamePage = (req, res, next) => {
       return res.status(404).send('Game not found');
   }
 
-  res.render('game', gameConfig);
+  return res.render('game', gameConfig);
 };
