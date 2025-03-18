@@ -9,6 +9,7 @@
   </head>
   <body>
     <div class="page-wrapper">
+
       <div class="login-wrapper">
         <div class="login-title">
           <h1>Login</h1>
@@ -16,11 +17,25 @@
         <form class="login-form" action="/login" method="POST">
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <input 
+            type="text" 
+            id="username" 
+            name="username"
+            class="<%= errorMessage === 'Invalid username' ? 'invalid' : '' %>"
+            value="<%= errorMessage === 'Invalid username' ? '' : oldInput.name %>" 
+            placeholder="<%= errorMessage || 'Enter your username...' %>" 
+            required >
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="<%= errorMessage ? 'invalid' : '' %>"
+            value="<%= errorMessage ? '' : oldInput.password %>"  
+            placeholder="<%= errorMessage || 'Enter your password...' %>"
+            required >
           </div>
           <div class="cta-btn-wrapper">
             <button type="submit" class="cta-btn">Login</button>

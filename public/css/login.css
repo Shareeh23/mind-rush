@@ -59,6 +59,10 @@
   border-color: var(--apricot-cream);
 }
 
+.login-form input.invalid {
+  border-color: var(--rust); 
+}
+
 .cta-btn-wrapper {
   display: flex;
   justify-content: center;

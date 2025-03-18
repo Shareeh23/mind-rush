@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const { validationResult } = require('express-validator');
 require('dotenv').config();
 
 const User = require('../models/user');
@@ -12,45 +13,57 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: 'shareeh06@gmail.com',
     pass: 'znilzdovbohllkxi',
-  }
+  },
 });
 
 exports.getLogin = (req, res, next) => {
-  return res.render('auth/login');
+  return res.render('auth/login', {
+    errorMessage: '',
+    oldInput: { name: '', password: '' },
+    validationErrors: [],
+  });
 };
 
 exports.getSignup = (req, res, next) => {
-  return res.render('auth/signup');
+  return res.render('auth/signup', {
+    errorMessage: null,
+    oldInput: { name: '', email: '', password: '' },
+    validationErrors: [],
+  });
 };
 
 exports.postSignup = (req, res, next) => {
   const name = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  User.findOne({ email: email })
-    .then((user) => {
-      if (user) {
-        return res.redirect('/signup');
-      }
-      return bcrypt
-        .hash(password, 12)
-        .then((hashedPassword) => {
-          const user = new User({
-            name: name,
-            email: email,
-            password: hashedPassword,
-          });
-          return user.save();
-        })
-        .then(() => {
-          res.redirect('/login');
-          return transporter.sendMail({
-            to: email,
-            from: 'mind-rush@gmail.com',
-            subject: 'Signup succeeded!',
-            text: 'You have signed into mind-rush website, login to continue...'
-          })
-        });
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      errorMessage: errors.array()[0].msg,
+      oldInput: { name: name, email: email, password: password },
+      validationErrors: errors.array()[0].path,
+    });
+  }
+
+  bcrypt
+    .hash(password, 12)
+    .then((hashedPassword) => {
+      const user = new User({
+        name: name,
+        email: email,
+        password: hashedPassword,
+      });
+      return user.save();
+    })
+    .then(() => {
+      res.redirect('/login');
+      return transporter.sendMail({
+        to: email,
+        from: 'mind-rush@gmail.com',
+        subject: 'Signup succeeded!',
+        text: 'You have signed into mind-rush website, login to continue...',
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -58,9 +71,14 @@ exports.postSignup = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const name = req.body.username;
   const password = req.body.password;
+
   User.findOne({ name: name }).then((user) => {
     if (!user) {
-      return res.redirect('/login');
+      return res.status(422).render('auth/login', {
+        errorMessage: 'Invalid username',
+        oldInput: { name: name, password: password },
+        validationErrors: [],
+      });
     }
     bcrypt
       .compare(password, user.password)
@@ -73,7 +91,11 @@ exports.postLogin = (req, res, next) => {
             res.redirect('/');
           });
         }
-        res.redirect('/login');
+        return res.status(422).render('auth/login', {
+          errorMessage: 'Password do not match!',
+          oldInput: { name: name, password: password },
+          validationErrors: [],
+        });
       })
       .catch((err) => console.log(err));
   });
@@ -117,7 +139,7 @@ exports.postReset = (req, res, next) => {
           html: `Click this http://localhost:3000/reset-password/${token}`, // html body
         });
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   });
 };
 
@@ -160,4 +182,3 @@ exports.postResetPassword = (req, res, next) => {
     .then((result) => res.redirect('/login'))
     .catch((err) => console.log(err));
 };
-
