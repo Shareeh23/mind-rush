@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
@@ -15,8 +16,7 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-const MONGODB_URI =
-  'mongodb+srv://shareeh:usermongo@cluster0.pjncv.mongodb.net/mind-rush?tls=true&tlsAllowInvalidCertificates=true';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -65,7 +65,10 @@ app.use(userRoutes);
 app.use(gameRoutes);
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, {
+    tls:true,
+    tlsAllowInvalidCertificates:true
+  })
   .then(() => {
     app.listen(3000);
   })

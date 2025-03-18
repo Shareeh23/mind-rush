@@ -1,9 +1,9 @@
 exports.getIndex = (req, res, next) => {
-  res.render('../index');
+  return res.render('../index');
 };
 
 exports.getLeaderboard = (req, res, next) => {
-  res.render('leaderboard');
+  return res.render('leaderboard');
 };
 
 /* exports.postLeaderboard = (req, res, next) => {

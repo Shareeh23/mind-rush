@@ -1,14 +1,26 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-const User = require('../models/user');;
+const User = require('../models/user');
+
+const transporter = nodemailer.createTransport({
+  secure: true,
+  host: 'smtp.gmail.com',
+  port: 465,
+  auth: {
+    user: 'shareeh06@gmail.com',
+    pass: 'znilzdovbohllkxi',
+  }
+});
 
 exports.getLogin = (req, res, next) => {
-  res.render('auth/login');
+  return res.render('auth/login');
 };
 
 exports.getSignup = (req, res, next) => {
-  res.render('auth/signup');
+  return res.render('auth/signup');
 };
 
 exports.postSignup = (req, res, next) => {
@@ -32,6 +44,12 @@ exports.postSignup = (req, res, next) => {
         })
         .then(() => {
           res.redirect('/login');
+          return transporter.sendMail({
+            to: email,
+            from: 'mind-rush@gmail.com',
+            subject: 'Signup succeeded!',
+            text: 'You have signed into mind-rush website, login to continue...'
+          })
         });
     })
     .catch((err) => console.log(err));
@@ -64,12 +82,12 @@ exports.postLogin = (req, res, next) => {
 exports.getLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(err);
-    res.redirect('/');
+    return res.redirect('/');
   });
 };
 
 exports.getReset = (req, res, next) => {
-  res.render('auth/reset');
+  return res.render('auth/reset');
 };
 
 exports.postReset = (req, res, next) => {
@@ -86,26 +104,31 @@ exports.postReset = (req, res, next) => {
           return res.redirect('auth/reset');
         }
         user.resetToken = token;
-        user.resetTokenExpiration = Date.now() * 3600000;
+        user.resetTokenExpiration = Date.now() + 3600000;
         return user.save();
       })
       .then(() => {
-        res.redirect('/login');
-        // here you have to send an email with the token attached to the user in the form of a mail and return it
+        res.redirect('/');
+        return transporter.sendMail({
+          from: 'mind-rush@gmail.com', // sender address
+          to: req.body.email, // list of receivers
+          subject: 'Shareeh from mind-rush', // Subject line
+          text: 'Change your password via this link', // plain text body
+          html: `Click this http://localhost:3000/reset-password/${token}`, // html body
+        });
       })
-      .catch();
+      .catch(err => console.log(err));
   });
 };
 
 exports.getResetPassword = (req, res, next) => {
   const token = req.params.token;
   User.findOne({
-    resetTokenExpiration: token,
+    resetToken: token,
     resetTokenExpiration: { $gt: Date.now() },
   })
     .then((user) => {
-      res.render('auth/reset-password', {
-        path: '/reset-password',
+      return res.render('auth/reset-password', {
         userId: user._id.toString(),
         passwordToken: token,
       });
@@ -137,3 +160,4 @@ exports.postResetPassword = (req, res, next) => {
     .then((result) => res.redirect('/login'))
     .catch((err) => console.log(err));
 };
+
