@@ -1,7 +1,31 @@
 @import url('global.css');
 
+.alert-wrapper {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: first baseline;
+  justify-content: center;
+  gap: 1rem;
+  width: 25%;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--black);
+  border-radius: 30px;
+  color: var(--white);
+  flex-wrap: nowrap;
+  font-family: "Orbit", sans-serif;
+  font-size: 1rem;
+}
+
+.alert-wrapper i {
+  color: var(--white);
+  size: 1rem;
+}
+
 .page-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;

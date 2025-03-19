@@ -5,11 +5,43 @@ body {
   font-weight: 400;
   font-style: normal;
   display: flex;
+  flex-direction: column;
+  gap: 2rem;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: var(--white);
   padding: 7.5rem 3.75rem;
+}
+
+.message-wrapper {
+  position: absolute;
+  top: 2rem;
+  right: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 15rem;
+  height: 3rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #E5A17C 22%, #E6985F 61%);
+  color: var(--white);
+  white-space: nowrap;
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: slideDown 0.5s ease forwards 2s; /* Start after 2s */
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* Page Wrapper */

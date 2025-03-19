@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="icon" href="icons/icon.png" type="image/png" />
+    <script
+      src="https://kit.fontawesome.com/b262aa5062.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="js/index.js" defer></script>
     <script src="js/timer.js" defer></script>
     <title>Mind-Rush</title>
   </head>
   <body>
+    <% if (loginMessage) { %>
+    <div class="message-wrapper">
+      <i class="fa-regular fa-hand-peace"></i> <p><%= loginMessage %></p>
+    </div>
+    <% } %>
     <div class="page-wrapper">
       <div class="image-wrapper"></div>
 

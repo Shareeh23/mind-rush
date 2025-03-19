@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/signup.css">
   <link rel="icon" href="icons/icon.png" type="image/png">
+  <script
+      src="https://kit.fontawesome.com/b262aa5062.js"
+      crossorigin="anonymous"
+    ></script>
   <title>Sign Up - Mind-Rush</title>
 </head>
 <body>
+  <% if (errorMessage) { %>
+    <div class="error-wrapper">
+      <i class="fa-solid fa-triangle-exclamation"></i> <p class="error-message"><%= errorMessage %></p>
+    </div>
+  <% } %>
+
   <div class="page-wrapper">
-    <% if (errorMessage) { %>
-      <div class="error-wrapper">
-        <p class="error-message"><%= errorMessage %></p>
-      </div>
-    <% } %>
-    
     <div class="signup-wrapper">
       
       <!-- First Row: Title -->

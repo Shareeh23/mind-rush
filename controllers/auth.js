@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 require('dotenv').config();
 
 const User = require('../models/user');
-const Leaderboard = require('../models/leaderboard')
+const Leaderboard = require('../models/leaderboard');
 
 const transporter = nodemailer.createTransport({
   secure: true,
@@ -18,7 +18,13 @@ const transporter = nodemailer.createTransport({
 });
 
 exports.getLogin = (req, res, next) => {
+  const resetRequestMessage = req.session.resetRequest;
+  const resetConfirmationMessage = req.session.resetConfirmation; 
+  req.session.resetRequest = null;
+  req.session.resetConfirmation = null;
   return res.render('auth/login', {
+    resetRequestMessage: resetRequestMessage,
+    resetConfirmationMessage: resetConfirmationMessage,
     errorMessage: '',
     oldInput: { name: '', password: '' },
     validationErrors: [],
@@ -62,8 +68,15 @@ exports.postSignup = (req, res, next) => {
       return transporter.sendMail({
         to: email,
         from: 'mind-rush@gmail.com',
-        subject: 'Signup succeeded!',
-        text: 'You have signed into mind-rush website, login to continue...',
+        subject: 'Welcome to Mind-Rush! 🎉',
+        html: `
+                <h2>Welcome to Mind-Rush!</h2>
+                <p>Hi ${name},</p>
+                <p>Congratulations! You've successfully signed up for Mind-Rush. Now you're ready to embark on your brain training journey!</p>
+                <p>Log in to your account and start playing right away. We're excited to have you on board!</p>
+                <p>If you have any questions or need assistance, feel free to reach out to our support team.</p>
+                <p>Best regards,<br>The Mind-Rush Team.</p>
+              `,
       });
     })
     .catch((err) => console.log(err));
@@ -105,7 +118,7 @@ exports.postLogin = (req, res, next) => {
                 console.error(error);
               }
             }
-
+            req.session.loginMessage = `Welcome ${user.name}!`;
             return res.redirect('/');
           });
         }
@@ -148,15 +161,23 @@ exports.postReset = (req, res, next) => {
         return user.save();
       })
       .then(() => {
-        res.redirect('/');
+        req.session.resetRequest = 'Password reset link has been sent to your email. Please check your inbox.';
+        res.redirect('/login');
         return transporter.sendMail({
-          from: 'mind-rush@gmail.com', // sender address
-          to: req.body.email, // list of receivers
-          subject: 'Shareeh from mind-rush', // Subject line
-          text: 'Change your password via this link', // plain text body
-          html: `Click this http://localhost:3000/reset-password/${token}`, // html body
+          from: 'mind-rush@gmail.com',
+          to: req.body.email,
+          subject: 'Mind Rush Password Reset',
+          text: `Your Mind Rush password reset link: http://localhost:3000/reset-password/${token}`,
+          html: `
+                  <p>Hello from Mind Rush!</p>
+                  <p>You recently requested to reset your password. Click the link below to create a new password:</p>
+                  <p><a href="http://localhost:3000/reset-password/${token}" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Reset Password</a></p>
+                  <p>If you didn't request this change, please ignore this email and your password will remain the same.</p>
+                  <p>This link will expire in 24 hours.</p>
+                  <p>Thank you,<br>The Mind Rush Team</p>
+                `,
         });
-      })
+      })  
       .catch((err) => console.log(err));
   });
 };
@@ -197,6 +218,9 @@ exports.postResetPassword = (req, res, next) => {
       resetUser.resetTokenExpiration = undefined;
       return resetUser.save();
     })
-    .then((result) => res.redirect('/login'))
+    .then((result) => {
+      req.session.resetConfirmation = `${result.name}, your password has been successfully reset.`;
+      return res.redirect('/login')
+    })
     .catch((err) => console.log(err));
 };

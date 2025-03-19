@@ -1,7 +1,11 @@
 const Leaderboard = require('../models/leaderboard');
 
 exports.getIndex = (req, res, next) => {
-  return res.render('../index');
+  const loginMessage = req.session.loginMessage;
+  req.session.loginMessage = null;
+  return res.render('../index', {
+    loginMessage: loginMessage
+  });
 };
 
 // Function to format time (seconds to hh:mm:ss)
@@ -61,8 +65,6 @@ exports.postLeaderboard = async (req, res, next) => {
 
 
 exports.getGamePage = (req, res, next) => {
-  const user = req.user;
-  console.log(user);
   const { gameType } = req.params; // Extract gameType from URL parameter
   let gameConfig = {};
 
