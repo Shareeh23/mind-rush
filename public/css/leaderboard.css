@@ -17,7 +17,7 @@ body {
   justify-content: center;
   height: 100%;
   width: 100%;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
 .title-wrapper {
@@ -60,11 +60,119 @@ h1{
   padding: 24px;
   border-radius: 2.5rem;
   background-color: var(--white);
+  transition: width 0.5s ease;
+}
+
+.view-all-leaderboards.resize {
+  width: 150%;
+}
+
+.all-leaderboard {
+  display: none;
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 2.5rem;
+  padding: 2rem;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+.all-leaderboard.show {
+  display: flex;
+  overflow-y: auto;
+}
+
+.all-leaderboard-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Create two equal-width columns */
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.ranker-card{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+  height: 100%;
+}
+
+.ranker-index {
+  font-family: "Exo 2", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center; 
+  align-items: center;      
+}
+
+.ranker-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ranker-image img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.ranker-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.ranker-name {
+  font-family: "Exo 2", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.ranker-time {
+  font-family: "Orbit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.all-leaderboard::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.all-leaderboard::-webkit-scrollbar-thumb {
+  background: var(--black);
+  border-radius: 0.5rem;
+}
+
+.all-leaderboard::-webkit-scrollbar-track {
+  background: var(--apricot-cream);
 }
 
 .achievers-svg {
   width: 30%;
   height: auto;
+}
+
+.achievers-svg.hide {
+  display: none;
 }
 
 .cta-btn {
@@ -79,7 +187,7 @@ h1{
   width: 30%;
   text-align: center;
   white-space: nowrap;
-  transition: all 0.3 ease-in;
+  transition: all 0.3s ease-in;
 }
 
 .cta-btn:hover {
@@ -92,12 +200,12 @@ h1{
   color: var(--bright-blue);
 }
 
-.top-rankings {
+.top-rankings, .view-all-leaderboards {
   width: 50%;
-  height: auto;
+  height: 276px;
   background-color: var(--white);
   border-radius: 2.5rem;
-  padding: 2rem
+  padding: 2rem;
 }
 
 .top-ranking-wrapper{
@@ -107,8 +215,7 @@ h1{
   width: 100%;
   height: 100%;
 }
-
-.top-rankings-card {
+.top-rankings-card{
   display: flex;
   flex-direction: row;
   gap: 2rem;
@@ -116,19 +223,33 @@ h1{
   height: 33.33%;
 }
 
+.leader-index {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 100%;
+  min-width: 3rem; 
+  min-height: 3rem;
+}
+
+.leader-index img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+}
+
 .leader-image {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .leader-image img {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 50%;
 }
-
 .leader-info {
   display: flex;
   flex-direction: column;
@@ -137,7 +258,6 @@ h1{
   width: 100%;
   height: 100%;
 }
-
 .leader-name {
   font-family: "Exo 2", sans-serif;
   font-optical-sizing: auto;
@@ -145,14 +265,12 @@ h1{
   font-style: normal;
   font-size: 1rem;
 }
-
 .leader-time {
   font-family: "Orbit", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
 }
-
 .cta-btn-wrapper {
   display: flex;
   flex-direction: row;
@@ -162,7 +280,4 @@ h1{
   width: 60%;
   height: 20%;
 }
-
-
-
 

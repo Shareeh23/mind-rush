@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" id="award">
+  <g transform="translate(-452 -1669.007)">
+    <path fill="#406b95" fill-rule="evenodd" d="M475.807 1673.007h-11.636l-2.829 2 1.515 2h13.834l1.517-2.42z"></path>
+    <path fill="#105286" d="m475.79 1673.01 3.464 2c1.2.693 1.587 2.204.915 3.415l-7.5 13.527h-5.164l9.2-15.527c.706-1.191.817-2.415-.915-3.415"></path>
+    <path fill="#104486" d="m470.5 1686.897-2.568 4.336.398.72h4.34l.398-.72-2.568-4.336z"></path>
+    <path fill="#105286" d="m464.21 1673.01-3.464 2c-1.2.693-1.587 2.204-.915 3.415l7.5 13.527h5.164l-9.2-15.527c-.706-1.191-.817-2.415.915-3.415"></path>
+    <circle cx="469.996" cy="1697.718" r="3.5" fill="#d2dce9" stroke="#f9b537" stroke-dashoffset="3.4" stroke-linecap="round" stroke-linejoin="round"></circle>
+    <path fill="none" stroke="#f9b536" stroke-dashoffset="3.4" stroke-width=".893" d="M467.764 1695.102v-2.735h4.465v2.623"></path>
+  </g>
+</svg>

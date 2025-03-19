@@ -1,11 +1,13 @@
 const exitButton = document.getElementById('clicker');
+const loginButton = document.getElementById('login-btn');
+const logoutButton = document.getElementById('logout-btn');
 
 const hoursElem = document.querySelector('.hours');
 const minutesElem = document.querySelector('.minutes');
 const secondsElem = document.querySelector('.seconds');
 
 let stopwatchInterval;
-let totalTimeInSeconds = parseInt(localStorage.getItem('stopwatchTime')) || 0; // Retrieve saved time or default to 0
+let totalTimeInSeconds = parseInt(localStorage.getItem('stopwatchTime')) || 0;
 
 // Format the time as hh:mm:ss
 function formatTime(seconds) {
@@ -29,9 +31,7 @@ function updateStopwatch() {
 
 // Function to start the stopwatch
 function startStopwatch() {
-  // First update immediately
   updateStopwatch();
-  // Start the interval after a 1-second delay
   setTimeout(() => {
     stopwatchInterval = setInterval(() => {
       totalTimeInSeconds++; 
@@ -41,20 +41,25 @@ function startStopwatch() {
   });
 }
 
+// Function to reset stopwatch
+function resetStopwatch() {
+  clearInterval(stopwatchInterval);
+  localStorage.removeItem('stopwatchTime');
+  totalTimeInSeconds = 0;
+  updateStopwatch();
+}
+
+// Start timer on page load
 window.addEventListener('DOMContentLoaded', () => {
   updateStopwatch();
- 
   setTimeout(() => {
     startStopwatch();
   });
 });
 
-// Stop and reset the stopwatch when clicking the exit button
-if (exitButton) {
-  exitButton.addEventListener('click', () => {
-    clearInterval(stopwatchInterval); 
-    localStorage.removeItem('stopwatchTime');
-    totalTimeInSeconds = 0;
-    updateStopwatch(); // Update the UI to show 00:00:00
-  });
-}
+// Attach event listeners to reset the stopwatch
+[exitButton, loginButton, logoutButton].forEach((button) => {
+  if (button) {
+    button.addEventListener('click', resetStopwatch);
+  }
+});

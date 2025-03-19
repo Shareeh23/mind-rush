@@ -5,6 +5,7 @@ const { validationResult } = require('express-validator');
 require('dotenv').config();
 
 const User = require('../models/user');
+const Leaderboard = require('../models/leaderboard')
 
 const transporter = nodemailer.createTransport({
   secure: true,
@@ -86,9 +87,26 @@ exports.postLogin = (req, res, next) => {
         if (doMatch) {
           req.session.isLoggedIn = true;
           req.session.user = user;
-          return req.session.save((err) => {
+          return req.session.save(async (err) => {
             console.log(err);
-            res.redirect('/');
+
+            if (req.session.tempTime) {
+              try {
+                const leaderboardEntry = new Leaderboard({
+                  userId: user._id,
+                  time: req.session.tempTime,
+                });
+
+                await leaderboardEntry.save();
+                req.session.tempTime = null; // Clear stored time
+                await req.session.save();
+                return res.redirect('/leaderboard'); // Redirect to leaderboard
+              } catch (error) {
+                console.error(error);
+              }
+            }
+
+            return res.redirect('/');
           });
         }
         return res.status(422).render('auth/login', {

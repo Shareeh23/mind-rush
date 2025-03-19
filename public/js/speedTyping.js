@@ -57,8 +57,7 @@ async function renderNewQuote() {
 
 function endGame() {
   // Get the final time from localStorage
-  const finalTime = parseInt(localStorage.getItem('stopwatchTime')) || 0;
-  console.log(typeof finalTime);
+  const finalTime = parseInt(localStorage.getItem('stopwatchTime'));
 
   // Save result to localStorage
   localStorage.setItem('result', 'win');
@@ -67,12 +66,10 @@ function endGame() {
   const gameOverEvent = new CustomEvent('gameOver', {
     detail: {
       result: 'win',
-      finalTime: +finalTime,
+      finalTime: finalTime,
     },
   });
   document.dispatchEvent(gameOverEvent);
-
-  console.log('Game over! Result saved: win, Time:', finalTime);
 
   // Disable input to prevent further typing
   quoteInputElement.disabled = true;
@@ -90,23 +87,19 @@ function sendTimeToLeaderboard(finalTime) {
     body: JSON.stringify({
       time: finalTime,
     }),
-    credentials: 'include', // Important to include cookies/session
-    // Add this to follow redirects automatically
+    credentials: 'include', 
     redirect: 'follow'
   })
     .then((response) => {
-      // Check if the response is a redirect
       if (response.redirected) {
         window.location.href = response.url;
         return { success: true, redirected: true };
       }
       
-      // If it's not a redirect but has an error status
       if (!response.ok) {
         throw new Error('Server returned ' + response.status);
       }
       
-      // If it's a successful JSON response
       return response.json();
     })
     .then((data) => {

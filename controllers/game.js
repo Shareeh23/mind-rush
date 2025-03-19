@@ -4,37 +4,60 @@ exports.getIndex = (req, res, next) => {
   return res.render('../index');
 };
 
+// Function to format time (seconds to hh:mm:ss)
+const formatTime = (seconds) => {
+  const hrs = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+};
+
 exports.getLeaderboard = (req, res, next) => {
-  return res.render('leaderboard');
+  Leaderboard.find()
+    .populate('userId', 'name')
+    .sort({ time: 1 })
+    .then(entries => {
+      const leaders = entries.map(entry => ({
+        username: entry.userId ? entry.userId.name : 'Unknown Player', // Handle missing user
+        formattedTime: formatTime(entry.time),
+        imageUrl: entry.imageUrl || 'images/user-01.avif'
+    }));    
+
+      res.render('leaderboard', { 
+        topLeaders: leaders.slice(0, 3),  // Top 3 players
+        allLeaders: leaders // All players for "View All"
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.postLeaderboard = async (req, res, next) => {
   try {
-    if (!req.session.user) {
-      return res.status(401).json({ message: 'User not authenticated' });
-    }
-    console.log(typeof req.body.time); // Should output 'string' or 'number'
     const time = parseInt(req.body.time, 10);
-    const userId = req.session.user._id; // Get user ID from session
 
-    console.log(time, userId);
-    console.log(typeof time);
+    if (!req.session.user) {
+      // Store time in session before redirecting to login
+      req.session.tempTime = time;
+      return res.redirect('/login'); // Redirect user to login
+    }
+
+    const userId = req.session.user._id; // Get user ID from session
 
     const leaderboardEntry = new Leaderboard({
       userId: userId,
       time: time,
     });
 
-    console.log(leaderboardEntry);
-
     await leaderboardEntry.save(); // Save to database
 
-    res.redirect('/leaderboard'); // Redirect to leaderboard page
+    return res.redirect('/leaderboard'); // Redirect to leaderboard page
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Something went wrong' });
+    return res.status(500).json({ message: 'Something went wrong' });
   }
 };
+
 
 
 exports.getGamePage = (req, res, next) => {
