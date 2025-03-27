@@ -37,7 +37,9 @@ function turnClick(square) {
 
 function turn(squareId, player) {
   origBoard[squareId] = player;
-  document.getElementById(squareId).innerText = player; // Set text to player mark ('X' or 'O')
+  let cell = document.getElementById(squareId);
+  cell.innerText = player;
+  cell.setAttribute('data-player', player); // Set text to player mark ('X' or 'O')
   let gameWon = checkWin(origBoard, player);
   if (gameWon) gameOver(gameWon); // End the game if there is a winner
 }
@@ -56,8 +58,7 @@ function checkWin(board, player) {
 
 function gameOver(gameWon) {
   for (let index of winCombos[gameWon.index]) {
-    document.getElementById(index).style.backgroundColor =
-      gameWon.player == huPlayer ? 'blue' : 'red';
+    document.getElementById(index).classList.add('win-cell');
   }
   for (let i = 0; i < cells.length; i++) {
     cells[i].removeEventListener('click', turnClick, false);
@@ -82,7 +83,7 @@ function bestSpot() {
 function checkTie() {
   if (emptySquares().length == 0) {
     for (let i = 0; i < cells.length; i++) {
-      cells[i].style.backgroundColor = 'green';
+      cells[i].classList.add('tie-cell');
       cells[i].removeEventListener('click', turnClick, false);
     }
     localStorage.setItem('result', 'tie');

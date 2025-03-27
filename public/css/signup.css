@@ -9,10 +9,15 @@
   top: 3rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--white);
+  background-color: var(--bg);
   border-radius: 12px;
   padding: 0.75rem 1rem;
-  color: var(--black);
+  color: var(--text);
+}
+
+.dark-mode .error-wrapper {
+  background-color: var(--accent-inverse);
+  color: var(--bg);
 }
 
 .page-wrapper {
@@ -22,21 +27,29 @@
   justify-content: center;
   gap: 1rem;
   height: 100vh;
-  background-color: var(--muted-coral);
+  background-color: var(--primary);
   padding: 2rem;
   overflow: hidden;
+}
+
+.dark-mode .page-wrapper {
+  background-color: var(--bg-inverse);
 }
 
 .signup-wrapper {
   width: 60%;
   padding: 2.5rem;
   border-radius: 2rem;
-  background-color: var(--white);
+  background-color: var(--bg);
   display: flex;
   flex-direction: row;
   gap: 2rem;
   align-items: center;
   justify-content: space-between;
+}
+
+.dark-mode .signup-wrapper {
+  background-color: var(--primary-inverse);
 }
 
 .signup-form-wrapper {
@@ -49,8 +62,12 @@
 .signup-title h1 {
   font-family: "Orbit", sans-serif;
   font-size: 3rem;
-  color: var(--black);
+  color: var(--text);
   text-align: center;
+}
+
+.dark-mode h1 {
+  color: var(--bg);
 }
 
 .signup-form {
@@ -69,12 +86,16 @@
 .form-group label {
   font-family: "Orbit", sans-serif;
   font-size: 1.2rem;
-  color: var(--black);
+  color: var(--text);
+}
+
+.dark-mode label {
+  color: var(--bg);
 }
 
 .form-group input {
   padding: 1rem;
-  border: 2px solid var(--black);
+  border: 2px solid var(--text);
   border-radius: 1rem;
   font-family: "Orbit", sans-serif;
   outline: none;
@@ -82,11 +103,15 @@
 }
 
 .form-group input:focus {
-  border-color: var(--apricot-cream);
+  border-color: var(--accent);
 }
 
 .form-group input.invalid {
-  border-color: var(--rust); 
+  border-color: var(--complementary); 
+}
+
+.dark-mode .form-group input.invalid {
+  border-color: var(--accent-inverse);
 }
 
 .btn-wrapper{
@@ -100,8 +125,8 @@
 
 .cta-btn, .cta-btn-google {
   padding: 0.8rem 1.2rem;
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--text);
+  color: var(--bg);
   border: none;
   border-radius: 1rem;
   font-family: "Orbit", sans-serif;
@@ -110,9 +135,19 @@
   transition: all 0.3s ease;
 }
 
+.dark-mode .cta-btn, .dark-mode .cta-btn-google {
+  background-color: var(--accent);
+  color: var(--bg-inverse);
+}
+
 .cta-btn:hover, .cta-btn-google:hover {
-  background-color: var(--apricot-cream);
-  color: var(--black);
+  background-color: var(--accent);
+  color: var(--text);
+}
+
+.dark-mode .cta-btn:hover, .dark-mode .cta-btn-google:hover {
+  background-color: var(--accent-inverse);
+  color: var(--bg);
 }
 
 .google-signup {
@@ -132,10 +167,19 @@ p {
   font-family: "Orbit", sans-serif;
   font-size: 0.8rem;
   text-align: center;
+  color: var(--text);
+}
+
+.dark-mode p {
+  color: var(--bg);
 }
 
 .vertical-line {
   height: 20rem;
   width: 2px;
-  border: 3px solid var(--muted-coral); /* Vertical line between sections */
+  border: 3px solid var(--primary); 
+}
+
+.dark-mode .vertical-line {
+  border-color: var(--bg);
 }

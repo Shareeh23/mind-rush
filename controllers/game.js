@@ -62,8 +62,6 @@ exports.postLeaderboard = async (req, res, next) => {
   }
 };
 
-
-
 exports.getGamePage = (req, res, next) => {
   const { gameType } = req.params; // Extract gameType from URL parameter
   let gameConfig = {};
@@ -166,7 +164,7 @@ exports.getGamePage = (req, res, next) => {
       break;
 
     default:
-      return res.status(404).send('Game not found');
+      return res.redirect('/404');
   }
 
   return res.render('game', gameConfig);

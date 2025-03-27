@@ -10,6 +10,10 @@ body {
   font-style: normal;
 }
 
+.dark-mode {
+  background-color: var(--bg-inverse)
+}
+
 .page-wrapper {
   display: flex;
   flex-direction: column;
@@ -27,8 +31,12 @@ body {
 
 h1{
   text-align: center;
-  color: var(--black);
+  color: var(--text);
   font-size: 2.5rem;
+}
+
+.dark-mode h1 {
+  color: var(--bg);
 }
 
 .center-wrapper {
@@ -53,8 +61,12 @@ h1{
   height: 15%;
   width: 100%;
   border-radius: 12px;
-  background-color: var(--muted-coral);
+  background-color: var(--primary);
   padding: 0 1.5rem;
+}
+
+.dark-mode .timer-box {
+  background-color: var(--primary-inverse);
 }
 
 .timer-box, .timer{
@@ -71,7 +83,7 @@ h1{
   width: 20%;
   height: 100%;
   font-size: 1.2rem;
-  color: var(--white);
+  color: var(--bg);
 }
 
 .game-play-hint {
@@ -82,11 +94,20 @@ h1{
   width: 100%;
   padding: 1rem 2rem;
   border-radius: 0.75rem;
-  background-color: var(--apricot-cream);
+  background-color: var(--accent);
+}
+
+.dark-mode .game-play-hint {
+  background-color: var(--accent-inverse);
 }
 
 .hint-text {
   font-size: 1.25rem;
+  color: var(--text);
+}
+
+.dark-mode .hint-text {
+  color: var(--bg);
 }
 
 .central-layout {
@@ -125,9 +146,13 @@ h1{
   width: 100%;
   padding: 1rem;
   border-radius: 12px;
-  background-color: var(--muted-coral);
+  background-color: var(--primary);
   font-size: 1rem;
-  color: var(--white);
+  color: var(--bg);
+}
+
+.dark-mode .computer-response-text {
+  background-color: var(--primary-inverse);
 }
 
 .computer-response-image {
@@ -147,22 +172,32 @@ h1{
 
 .cta-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid var(--black);
+  border: 2px solid var(--text);
   border-radius: 30px;
   font-family: "Orbit", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
-  color: var(--black);
+  color: var(--text);
   width: 30%;
   text-align: center;
   white-space: nowrap;
   transition: all 0.3 ease-in;
 }
 
+.dark-mode .cta-btn {
+  border-color: var(--bg);
+  color: var(--bg);
+}
+
 .cta-btn:hover {
-  border: 2px solid var(--muted-coral);
-  color: var(--muted-coral);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.dark-mode .cta-btn:hover {
+  border-color: var(--accent-inverse);
+  color: var(--accent-inverse);
 }
 
 .cta-btn:focus {
@@ -170,9 +205,19 @@ h1{
   color: var(--bright-blue);
 }
 
+.dark-mode .cta-btn:focus {
+  border-color: var(--complementary-inverse);
+  color: var(--complementary-inverse);
+}
+
 .cta-btn.disabled  {
-  border: 2px solid var(--apricot-cream);
-  color: var(--apricot-cream);
+  border: 2px solid var(--accent);
+  color: var(--accent);
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.dark-mode .cta-btn.disabled {
+  border-color: rgb(75, 74, 75);
+  color: rgb(75, 74, 75);
 }

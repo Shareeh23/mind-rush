@@ -21,7 +21,7 @@ table tr td:last-child {
 }
 
 td {
-	border:  2px solid var(--black);
+	border:  2px solid var(--text);
 	height:  100px;
 	width:  100px;
 	text-align:  center;
@@ -32,4 +32,44 @@ td {
   font-style: normal;
 	font-size:  5rem;
 	cursor: pointer;
+}
+
+.cell[data-player="O"] {
+  color: var(--text); /* Human player */
+}
+
+.cell[data-player="X"] {
+  color: var(--text); /* AI player */
+}
+
+.win-cell {
+  background-color: var(--accent) !important; /* Highlight winning cells */
+}
+
+.tie-cell {
+  background-color: var(--bright-blue) !important; /* Highlight all cells on a tie */
+}
+
+.dark-mode td {
+	border-color: var(--bg);
+}
+
+.dark-mode .cell[data-player="O"] {
+	color: var(--accent-inverse);
+}
+
+.dark-mode .cell[data-player="X"] {
+	color: var(--bg);
+}
+
+.dark-mode .win-cell {
+  background-color: var(--complementary-inverse) !important; /* Highlight winning cells */
+}
+
+.dark-mode .tie-cell {
+  background-color: var(--deep-teal) !important; /* Highlight all cells on a tie */
+}
+
+.dark-mode .computer-response-text {
+  color: var(--bg);
 }

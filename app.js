@@ -11,7 +11,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const User = require('./models/user');
 
 const gameRoutes = require('./routes/game');
-const userRoutes = require('./routes/user');
+const errorRoutes = require('./routes/error');
 const authRoutes = require('./routes/auth');
 
 const app = express();
@@ -44,10 +44,15 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then((user) => {
+      if (!user) {
+        return next();
+      }
       req.user = user;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      throw new Error(err);
+    });
 });
 
 app.use((req, res, next) => {
@@ -55,20 +60,23 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
-}));
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  })
+);
 
+
+app.use(errorRoutes);
 app.use(authRoutes);
-app.use(userRoutes);
 app.use(gameRoutes);
 
 mongoose
   .connect(MONGODB_URI, {
-    tls:true,
-    tlsAllowInvalidCertificates:true
+    tls: true,
+    tlsAllowInvalidCertificates: true,
   })
   .then(() => {
     app.listen(3000);

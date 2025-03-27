@@ -20,17 +20,22 @@
   font-size: 1.5rem;
   text-align: left;
   padding: 1rem;
-  color: var(--black);
-  background-color: var(--white);
+  color: var(--text-dark);
+  background-color: var(--text-light);
   border-radius: 0.75rem;
-  border: 2px solid var(--black);
+  border: 2px solid var(--text-dark);
+}
+
+.dark-mode .quote-display, .dark-mode .quote-input {
+  color: var(--bg);
+  background-color: var(--primary-inverse);
 }
 
 .quote-input {
   height: 30%;
   outline: none;
   font-size: 1.2rem;
-  color: var(--black);
+  color: var(--text-dark);
   transition: all 0.3s ease-in-out;
 }
 
@@ -40,7 +45,11 @@ input, textarea {
 
 .quote-input::placeholder {
   font-style: italic; 
-  color: var(--muted-coral);
+  color: var(--primary);
+}
+
+.dark-mode .quote-input::placeholder {
+  color: var(--bg);
 }
 
 .quote-input:focus {
@@ -48,11 +57,20 @@ input, textarea {
   box-shadow: 0 0 8px var(--bright-blue);
 }
 
+.dark-mode .quote-input:focus {
+  border-color: none;
+  box-shadow: none;
+}
+
 .correct {
-  color: var(--bright-blue);
+  color: var(--deep-teal);
 }
 
 .incorrect {
   color: var(--rust);
   text-decoration: underline;
+}
+
+.dark-mode .incorrect {
+  color: var(--accent-inverse);
 }

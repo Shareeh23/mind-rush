@@ -11,14 +11,23 @@
     ></script>
     <script src="js/index.js" defer></script>
     <script src="js/timer.js" defer></script>
+    <script src="js/darkMode.js" defer></script>
     <title>Mind-Rush</title>
   </head>
   <body>
     <% if (loginMessage) { %>
     <div class="message-wrapper">
-      <i class="fa-regular fa-hand-peace"></i> <p><%= loginMessage %></p>
+      <i class="fa-regular fa-hand-peace"></i>
+      <p><%= loginMessage %></p>
     </div>
     <% } %>
+
+    <div class="dark-mode-wrapper">
+      <button class="theme-switch-btn" id="theme-switch-btn">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+
     <div class="page-wrapper">
       <div class="image-wrapper"></div>
 
@@ -817,7 +826,11 @@
         </div>
         <div class="menu-links">
           <ul>
-            <li><a href="/banana-math" id="start-game" class="active">Start Game</a></li>
+            <li>
+              <a href="/banana-math" id="start-game" class="active"
+                >Start Game</a
+              >
+            </li>
             <li><a href="/leaderboard">Leaderboard</a></li>
             <% if(!isAuthenticated) { %>
             <li><a href="/login" id="login-btn">Login</a></li>

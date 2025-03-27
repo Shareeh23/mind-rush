@@ -8,6 +8,11 @@ body {
   font-family: "Orbit", sans-serif;
   font-weight: 400;
   font-style: normal;
+  background-color: var(--bg);
+}
+
+ .dark-mode {
+  background: var(--bg-inverse);
 }
 
 .page-wrapper {
@@ -27,8 +32,12 @@ body {
 
 h1{
   text-align: center;
-  color: var(--black);
+  color: var(--text);
   font-size: 2.5rem;
+}
+
+.dark-mode h1 {
+  color: var(--bg);
 }
 
 .center-wrapper {
@@ -38,7 +47,11 @@ h1{
   height: auto;
   padding: 2.5rem 4rem;
   border-radius: 2.5rem;
-  background-color: var(--muted-coral);
+  background-color: var(--primary);
+}
+
+.dark-mode .center-wrapper {
+  background-color: var(--primary-inverse);
 }
 
 .leader-boards{
@@ -59,8 +72,8 @@ h1{
   height: auto;
   padding: 24px;
   border-radius: 2.5rem;
-  background-color: var(--white);
   transition: width 0.5s ease;
+  color: var(--text);
 }
 
 .view-all-leaderboards.resize {
@@ -70,7 +83,6 @@ h1{
 .all-leaderboard {
   display: none;
   width: 100%;
-  background-color: var(--white);
   border-radius: 2.5rem;
   padding: 2rem;
   overflow: hidden;
@@ -158,12 +170,12 @@ h1{
 }
 
 .all-leaderboard::-webkit-scrollbar-thumb {
-  background: var(--black);
+  background: var(--text);
   border-radius: 0.5rem;
 }
 
 .all-leaderboard::-webkit-scrollbar-track {
-  background: var(--apricot-cream);
+  background: var(--accent);
 }
 
 .achievers-svg {
@@ -177,22 +189,32 @@ h1{
 
 .cta-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid var(--black);
+  border: 2px solid var(--text);
   border-radius: 30px;
   font-family: "Orbit", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
-  color: var(--black);
+  color: var(--text);
   width: 30%;
   text-align: center;
   white-space: nowrap;
   transition: all 0.3s ease-in;
 }
 
+.dark-mode .cta-btn {
+  border: 2px solid var(--complementary-inverse);
+  color: var(--complementary-inverse);
+}
+
 .cta-btn:hover {
-  border: 2px solid var(--muted-coral);
-  color: var(--muted-coral);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.dark-mode .cta-btn:hover {
+  border: 2px solid var(--accent-inverse);
+  color: var(--accent-inverse);
 }
 
 .cta-btn:focus {
@@ -200,12 +222,21 @@ h1{
   color: var(--bright-blue);
 }
 
+.dark-mode .cta-btn:focus {
+  border: 2px solid var(--complementary-inverse);
+  color: var(--complementary-inverse);
+}
+
 .top-rankings, .view-all-leaderboards {
   width: 50%;
   height: 276px;
-  background-color: var(--white);
+  background-color: var(--bg);
   border-radius: 2.5rem;
   padding: 2rem;
+}
+
+.dark-mode .top-rankings, .dark-mode .view-all-leaderboards {
+  background-color: var(--accent);
 }
 
 .top-ranking-wrapper{
@@ -231,6 +262,7 @@ h1{
   height: 100%;
   min-width: 3rem; 
   min-height: 3rem;
+  color: var(--text);
 }
 
 .leader-index img {
@@ -244,12 +276,14 @@ h1{
   justify-content: center;
   align-items: center;
 }
+
 .leader-image img {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 50%;
 }
+
 .leader-info {
   display: flex;
   flex-direction: column;
@@ -257,20 +291,26 @@ h1{
   gap: 1rem;
   width: 100%;
   height: 100%;
+  color: var(--text);
 }
+
 .leader-name {
   font-family: "Exo 2", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
+  color: var(--text);
 }
+
 .leader-time {
   font-family: "Orbit", sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 1rem;
+  color: var(--text);
 }
+
 .cta-btn-wrapper {
   display: flex;
   flex-direction: row;

@@ -154,7 +154,7 @@ exports.postReset = (req, res, next) => {
       .then((user) => {
         if (!user) {
           console.log('No user found');
-          return res.redirect('auth/reset');
+          return res.redirect('/reset');
         }
         user.resetToken = token;
         user.resetTokenExpiration = Date.now() + 3600000;

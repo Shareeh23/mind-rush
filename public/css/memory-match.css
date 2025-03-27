@@ -35,7 +35,7 @@
   object-fit: cover;
   position: absolute;
   border-radius: 5px;
-  background: #1C7CCC;
+  background: var(--bright-blue);
   backface-visibility: hidden;
 }
 
