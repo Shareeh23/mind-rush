@@ -20,10 +20,10 @@
   font-size: 1.5rem;
   text-align: left;
   padding: 1rem;
-  color: var(--text-dark);
-  background-color: var(--text-light);
+  color: var(--text);
+  background-color: var(--bg);
   border-radius: 0.75rem;
-  border: 2px solid var(--text-dark);
+  border: 2px solid var(--text);
 }
 
 .dark-mode .quote-display, .dark-mode .quote-input {
@@ -63,11 +63,15 @@ input, textarea {
 }
 
 .correct {
+  color: var(--bright-blue);
+}
+
+.dark-mode .correct {
   color: var(--deep-teal);
 }
 
 .incorrect {
-  color: var(--rust);
+  color: var(--complementary);
   text-decoration: underline;
 }
 

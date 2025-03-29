@@ -7,6 +7,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const multer = require('multer');
 
 const User = require('./models/user');
 
@@ -23,11 +24,37 @@ const store = new MongoDBStore({
   collection: 'sessions',
 });
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now().toString() + '-' + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/avif'
+  ) {
+    console.log("File MIME type:", file.mimetype);
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
@@ -67,7 +94,6 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
   })
 );
-
 
 app.use(errorRoutes);
 app.use(authRoutes);

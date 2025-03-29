@@ -19,13 +19,13 @@ const formatTime = (seconds) => {
 
 exports.getLeaderboard = (req, res, next) => {
   Leaderboard.find()
-    .populate('userId', 'name')
+    .populate('userId', 'name image')
     .sort({ time: 1 })
     .then(entries => {
       const leaders = entries.map(entry => ({
-        username: entry.userId ? entry.userId.name : 'Unknown Player', // Handle missing user
+        username: entry.userId ? entry.userId.name : 'Unknown Player',
         formattedTime: formatTime(entry.time),
-        imageUrl: entry.imageUrl || 'images/user-01.avif'
+        image: entry.userId ? entry.userId.image : 'images/random-avatar.avif'
     }));    
 
       res.render('leaderboard', { 
@@ -47,10 +47,12 @@ exports.postLeaderboard = async (req, res, next) => {
     }
 
     const userId = req.session.user._id; // Get user ID from session
+    const image = req.session.user.image;
 
     const leaderboardEntry = new Leaderboard({
       userId: userId,
       time: time,
+      image: image
     });
 
     await leaderboardEntry.save(); // Save to database

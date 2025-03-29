@@ -19,7 +19,7 @@ const transporter = nodemailer.createTransport({
 
 exports.getLogin = (req, res, next) => {
   const resetRequestMessage = req.session.resetRequest;
-  const resetConfirmationMessage = req.session.resetConfirmation; 
+  const resetConfirmationMessage = req.session.resetConfirmation;
   req.session.resetRequest = null;
   req.session.resetConfirmation = null;
   return res.render('auth/login', {
@@ -27,7 +27,6 @@ exports.getLogin = (req, res, next) => {
     resetConfirmationMessage: resetConfirmationMessage,
     errorMessage: '',
     oldInput: { name: '', password: '' },
-    validationErrors: [],
   });
 };
 
@@ -43,7 +42,18 @@ exports.postSignup = (req, res, next) => {
   const name = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
+  const image = req.file;
   const errors = validationResult(req);
+
+  console.log(image);
+
+  if (!image) {
+    return res.status(422).render('auth/signup', {
+      errorMessage: 'Attached file is not an image',
+      oldInput: { name: name, email: email, password: password },
+      validationErrors: [],
+    });
+  }
 
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
@@ -53,6 +63,8 @@ exports.postSignup = (req, res, next) => {
     });
   }
 
+  const imagePath = image.path;
+
   bcrypt
     .hash(password, 12)
     .then((hashedPassword) => {
@@ -60,6 +72,7 @@ exports.postSignup = (req, res, next) => {
         name: name,
         email: email,
         password: hashedPassword,
+        image: imagePath,
       });
       return user.save();
     })
@@ -85,13 +98,24 @@ exports.postSignup = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const name = req.body.username;
   const password = req.body.password;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/signup', {
+      resetRequestMessage: null,
+      resetConfirmationMessage: null,
+      errorMessage: errors.array()[0].msg,
+      oldInput: { name: name, email: email, password: password },
+    });
+  }
 
   User.findOne({ name: name }).then((user) => {
     if (!user) {
       return res.status(422).render('auth/login', {
+        resetRequestMessage: null,
+        resetConfirmationMessage: null,
         errorMessage: 'Invalid username',
         oldInput: { name: name, password: password },
-        validationErrors: [],
       });
     }
     bcrypt
@@ -123,12 +147,16 @@ exports.postLogin = (req, res, next) => {
           });
         }
         return res.status(422).render('auth/login', {
+          resetRequestMessage: null,
+          resetConfirmationMessage: null,
           errorMessage: 'Password do not match!',
           oldInput: { name: name, password: password },
-          validationErrors: [],
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.error('Error comparing passwords:', err);
+        return res.redirect('/login');
+      });
   });
 };
 
@@ -161,7 +189,8 @@ exports.postReset = (req, res, next) => {
         return user.save();
       })
       .then(() => {
-        req.session.resetRequest = 'Password reset link has been sent to your email. Please check your inbox.';
+        req.session.resetRequest =
+          'Password reset link has been sent to your email. Please check your inbox.';
         res.redirect('/login');
         return transporter.sendMail({
           from: 'mind-rush@gmail.com',
@@ -177,7 +206,7 @@ exports.postReset = (req, res, next) => {
                   <p>Thank you,<br>The Mind Rush Team</p>
                 `,
         });
-      })  
+      })
       .catch((err) => console.log(err));
   });
 };
@@ -220,7 +249,7 @@ exports.postResetPassword = (req, res, next) => {
     })
     .then((result) => {
       req.session.resetConfirmation = `${result.name}, your password has been successfully reset.`;
-      return res.redirect('/login')
+      return res.redirect('/login');
     })
     .catch((err) => console.log(err));
 };

@@ -20,13 +20,12 @@ router.get('/reset-password/:token', authController.getResetPassword);
 router.post(
   '/signup',
   [
-    // Validate username: not empty and at least 5 characters long
     check('username')
       .trim()
       .notEmpty()
       .withMessage('Username is required')
-      .isLength({ min: 5 })
-      .withMessage('Username must be at least 5 characters long')
+      .isLength({ min: 5, max: 15 })
+      .withMessage('Username must be between 5 - 15 characters long')
       .custom((value, { req }) => {
         return User.findOne({ name: value }).then((user) => {
           if (user) {
@@ -35,7 +34,6 @@ router.post(
         });
       }),
 
-    // Validate email: not empty and a valid email format
     check('email')
       .normalizeEmail()
       .notEmpty()
@@ -43,7 +41,6 @@ router.post(
       .isEmail()
       .withMessage('Please enter a valid email'),
 
-    // Validate password: not empty and at least 6 characters long
     check('password')
       .trim()
       .notEmpty()
@@ -57,8 +54,8 @@ router.post(
 );
 
 router.post('/login', authController.postLogin, [
-  check('username').trim(),
-  check('password').trim(),
+  check('username').trim().notEmpty().withMessage('Username is required'),
+  check('password').trim().notEmpty().withMessage('Password is required'),
 ]);
 
 router.post('/reset', authController.postReset);

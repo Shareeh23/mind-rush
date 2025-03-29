@@ -32,7 +32,7 @@
       <!-- Second Row: Form Fields -->
 
       <div class="signup-form-wrapper">
-        <form class="signup-form" action="/signup" method="POST" novalidate>
+        <form class="signup-form" action="/signup" method="POST" enctype="multipart/form-data" novalidate>
           <div class="form-group">
             <label for="username">Username</label>
             <input 
@@ -64,6 +64,16 @@
             name="password" 
             placeholder="Enter your password" 
             value="<%= oldInput.password %>" 
+            required >
+          </div>
+          <div class="form-group">
+            <label for="image">User Image</label>
+            <input 
+            type="file" 
+            id="image" 
+            class="<%= validationErrors === 'image' ? 'invalid' : '' %>"
+            name="image" 
+            placeholder="Enter your user image"  
             required >
           </div>
       </div>
