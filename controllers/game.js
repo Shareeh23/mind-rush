@@ -3,7 +3,9 @@ const Leaderboard = require('../models/leaderboard');
 exports.getIndex = (req, res, next) => {
   const loginMessage = req.session.loginMessage;
   req.session.loginMessage = null;
+  const profileImage = req.user ? req.user.image : null;
   return res.render('../index', {
+    profileImage: profileImage,
     loginMessage: loginMessage
   });
 };
@@ -47,12 +49,10 @@ exports.postLeaderboard = async (req, res, next) => {
     }
 
     const userId = req.session.user._id; // Get user ID from session
-    const image = req.session.user.image;
 
     const leaderboardEntry = new Leaderboard({
       userId: userId,
       time: time,
-      image: image
     });
 
     await leaderboardEntry.save(); // Save to database

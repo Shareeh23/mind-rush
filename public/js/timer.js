@@ -1,4 +1,4 @@
-const exitButton = document.getElementById('clicker');
+const exitButton = document.getElementById('exit-btn');
 const loginButton = document.getElementById('login-btn');
 const logoutButton = document.getElementById('logout-btn');
 
@@ -58,8 +58,11 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // Attach event listeners to reset the stopwatch
-[exitButton, loginButton, logoutButton].forEach((button) => {
-  if (button) {
-    button.addEventListener('click', resetStopwatch);
-  }
-});
+if (exitButton) {
+  exitButton.addEventListener('click', () => {
+    clearInterval(stopwatchInterval); 
+    localStorage.removeItem('stopwatchTime');
+    totalTimeInSeconds = 0;
+    updateStopwatch(); // Update the UI to show 00:00:00
+  });
+};

@@ -37,7 +37,7 @@ body,
   justify-content: center;
   gap: 1rem;
   width: 15rem;
-  height: 3rem;
+  height: 3.5rem;
   border-radius: 12px;
   background: var(--accent);
   color: var(--text);
@@ -50,6 +50,19 @@ body,
 .dark-mode .message-wrapper {
   background: var(--accent-inverse);
   color: var(--bg);
+}
+
+.profile-image {
+ height: 3rem;
+ width: 3rem;
+ border-radius: 50%; 
+ overflow: hidden;
+}
+
+.profile-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 @keyframes slideDown {
