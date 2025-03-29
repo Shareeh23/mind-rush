@@ -154,11 +154,11 @@ exports.getGamePage = (req, res, next) => {
         computerResponseInitial:
           'Oh no, not typing!  Sweaty palms already?  it’s just your pride on the line.',
         computerResponseWin:
-          'Well, well, look who finally made it!  Guess you’re not as slow as we thought... for now',
+          'Nice one! You beat the odds! Looks like you are a true champion',
         computerResponseLose:
           'Oops! Looks like your fingers were faster than your brain. Better luck next time!',
         svgPathInitial: 'svgs/bipolar.svg',
-        svgPathWin: 'svgs/surprise.svg',
+        svgPathWin: 'svgs/celebration.svg',
         svgPathLose: 'svgs/angry.svg',
         pathWin: '/leaderboard',
         pathLose: null

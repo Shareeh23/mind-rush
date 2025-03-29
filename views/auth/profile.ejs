@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="icon" href="icons/icon.png" type="image/png" />
+    <script src="js/darkMode.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/b262aa5062.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Mind-Rush - Profile</title>
+  </head>
+  <body class="dark-mode">
+    <% if (errorMessage) { %>
+    <div class="error-wrapper">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p class="error-message"><%= errorMessage %></p>
+    </div>
+    <% } %>
+    <div class="page-wrapper">
+      <div class="profile-section">
+        <h2>Your Profile</h2>
+        <div class="profile-image">
+          <img src="/<%= user.image %>" alt="Profile Image" />
+        </div>
+        <div class="profile-details">
+          <p><strong>Name:</strong> <%= user.name %></p>
+          <p><strong>Email:</strong> <%= user.email %></p>
+        </div>
+      </div>
+
+      <div class="edit-profile-form-wrapper">
+        <h2>Edit Your Profile</h2>
+        <div class="edit-profile-form">
+          <form action="/profile" method="POST" enctype="multipart/form-data" novalidate>
+            <div class="form-columns">
+              <div class="column-01">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    class="<%= validationErrors === 'username' ? 'invalid' : '' %>"
+                    name="username"
+                    placeholder="Enter your username"
+                    value="<%= oldInput.name %>"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="<%= validationErrors === 'email' ? 'invalid' : '' %>"
+                    name="email"
+                    placeholder="Enter your email"
+                    value="<%= oldInput.email %>"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="column-02">
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    id="password"
+                    class="<%= validationErrors === 'password' ? 'invalid' : '' %>"
+                    name="password"
+                    placeholder="Enter your password"
+                    value="<%= oldInput.password %>"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="image">Profile Image</label>
+                  <input
+                    type="file"
+                    id="image"
+                    class="<%= validationErrors === 'image' ? 'invalid' : '' %>"
+                    name="image"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="cta-btn">Update Profile</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Profile Section -->
+      <div class="delete-profile-wrapper">
+        <h2>Delete Profile</h2>
+        <p class="warning-text">
+          Deleting your profile is a permanent action and cannot be undone. All
+          your data will be lost.
+        </p>
+        <div class="delete-profile-form">
+          <form action="/delete-profile" method="POST">
+            <button type="submit" class="delete-btn">Delete Profile</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

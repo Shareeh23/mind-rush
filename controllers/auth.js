@@ -26,6 +26,7 @@ exports.getLogin = (req, res, next) => {
     resetRequestMessage: resetRequestMessage,
     resetConfirmationMessage: resetConfirmationMessage,
     errorMessage: '',
+    validationErrors: [],
     oldInput: { name: '', password: '' },
   });
 };
@@ -36,6 +37,30 @@ exports.getSignup = (req, res, next) => {
     oldInput: { name: '', email: '', password: '' },
     validationErrors: [],
   });
+};
+
+exports.getLogout = (req, res, next) => {
+  req.session.destroy((err) => {
+    console.log(err);
+    return res.redirect('/');
+  });
+};
+
+exports.getProfile = (req, res, next) => {
+  const userId = req.user._id;
+  User.findOne({ _id: userId })
+    .then((user) => {
+      res.render('auth/profile', {
+        user: user,
+        errorMessage: null,
+        oldInput: { name: '', email: '', password: '' },
+        validationErrors: [],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect('/login');
+    });
 };
 
 exports.postSignup = (req, res, next) => {
@@ -101,11 +126,12 @@ exports.postLogin = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(422).render('auth/signup', {
+    return res.status(422).render('auth/login', {
       resetRequestMessage: null,
       resetConfirmationMessage: null,
       errorMessage: errors.array()[0].msg,
-      oldInput: { name: name, email: email, password: password },
+      validationErrors: errors.array()[0].path,
+      oldInput: { name: name, password: password },
     });
   }
 
@@ -115,6 +141,7 @@ exports.postLogin = (req, res, next) => {
         resetRequestMessage: null,
         resetConfirmationMessage: null,
         errorMessage: 'Invalid username',
+        validationErrors: null,
         oldInput: { name: name, password: password },
       });
     }
@@ -150,6 +177,7 @@ exports.postLogin = (req, res, next) => {
           resetRequestMessage: null,
           resetConfirmationMessage: null,
           errorMessage: 'Password do not match!',
+          validationErrors: null,
           oldInput: { name: name, password: password },
         });
       })
@@ -160,11 +188,93 @@ exports.postLogin = (req, res, next) => {
   });
 };
 
-exports.getLogout = (req, res, next) => {
-  req.session.destroy((err) => {
-    console.log(err);
-    return res.redirect('/');
-  });
+exports.postProfile = (req, res, next) => {
+  const userId = req.user._id;
+  const updatedName = req.body.username;
+  const updatedEmail = req.body.email;
+  const updatedPassword = req.body.password;
+  const updatedImage = req.file
+    ? req.file.path.replace('\\', '/')
+    : req.user.image;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('auth/profile', {
+      user: req.user,
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array()[0].path,
+      oldInput: {
+        name: updatedName,
+        email: updatedEmail,
+        password: updatedPassword,
+        image: updatedImage,
+      },
+    });
+  }
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.redirect('/login');
+      }
+      user.name = updatedName;
+      user.email = updatedEmail;
+      user.image = updatedImage;
+      return bcrypt.hash(updatedPassword, 12).then((hashedPassword) => {
+        user.password = hashedPassword;
+        return user.save();
+      });
+    })
+    .then(() => {
+      return User.findById(userId); // Fetch updated user
+    })
+    .then((updatedUser) => {
+      res.render('auth/profile', {
+        user: updatedUser,
+        errorMessage: null,
+        oldInput: { name: '', email: '', password: '' },
+        validationErrors: [],
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect('/profile');
+    });
+};
+
+exports.postDeleteProfile = (req, res, next) => {
+  const userId = req.user._id;
+
+  User.findById(userId)
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      const userEmail = user.email;
+      const userName = user.name;
+      return transporter.sendMail({
+        to: userEmail,
+        from: 'mind-rush@gmail.com',
+        subject: 'Account Deleted - Mind-Rush',
+        html: `
+          <h2>Your Mind-Rush Account Has Been Deleted</h2>
+          <p>Hi ${userName},</p>
+          <p>We're sorry to see you go! Your account has been successfully deleted from Mind-Rush.</p>
+          <p>If this was a mistake or you’d like to return, you can always create a new account and start again.</p>
+          <p>If you have any feedback or concerns, please feel free to reach out to our support team.</p>
+          <p>Best regards,<br>The Mind-Rush Team.</p>
+        `,
+      }).then(() => ({ userId })); 
+    })
+    .then(({ userId }) => {
+      return User.deleteOne({ _id: userId });
+    })
+    .then(() => {
+      req.session.destroy(() => {
+        res.redirect('/');
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.getReset = (req, res, next) => {
