@@ -198,7 +198,6 @@ h1{
   color: var(--text);
   width: 30%;
   text-align: center;
-  white-space: nowrap;
   transition: all 0.3s ease-in;
 }
 
@@ -319,5 +318,170 @@ h1{
   gap: 2rem;
   width: 60%;
   height: 20%;
+}
+
+@media (max-width: 992px) {
+  body {
+    padding: 60px;
+    overflow-y: auto;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .achievers-svg {
+    display: none;
+  }
+
+  .leader-boards {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .top-rankings, .view-all-leaderboards {
+    width: 100%;
+    height: auto;
+  }
+
+  .leader-index {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .view-all-leaderboards.resize {
+    width: 100%;
+  }
+
+  .all-leaderboard-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-btn-wrapper {
+    width: 80%;
+  }
+
+  .achievers-svg {
+    width: 50%;
+  }
+}
+
+/* Large Mobile Phones (576px to 767px) */
+@media (max-width: 768px) {
+  body {
+    padding: 60px;
+  }
+
+  .title-wrapper {
+    height: auto;
+    min-height: 60px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .center-wrapper {
+    padding: 1rem 1.5rem;
+    border-radius: 1.5rem;
+  }
+
+  .top-rankings, .view-all-leaderboards {
+    padding: 1rem;
+    border-radius: 1.5rem;
+  }
+
+  .leader-index {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .leader-image img, .ranker-image img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .leader-name, .ranker-name, .leader-time, .ranker-time {
+    font-size: 0.9rem;
+  }
+
+  .leader-index img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .cta-btn {
+    width: 80%;
+    font-size: 0.9rem;
+  }
+
+  .cta-btn-wrapper {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    height: auto;
+  }
+}
+
+/* Small Mobile Phones (Up to 575px) */
+@media (max-width: 576px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .center-wrapper {
+    padding: 0.75rem 1rem;
+    border-radius: 2rem;
+  }
+
+  .top-rankings, .view-all-leaderboards {
+    padding: 1rem;
+    border-radius: 2rem;
+  }
+
+  .top-rankings-card {
+    gap: 1rem;
+  }
+
+  .leader-index {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .leader-image img, .ranker-image img,  .leader-index img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .leader-name, .ranker-name, .leader-time, .ranker-time {
+    font-size: 0.8rem;
+  }
+
+  .leader-index, .ranker-index {
+    font-size: 0.8rem;
+  }
+
+  .leader-index img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .cta-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .leader-info, .ranker-info {
+    gap: 0.5rem;
+  }
 }
 

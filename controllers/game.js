@@ -56,7 +56,6 @@ exports.postLeaderboard = async (req, res, next) => {
     });
 
     await leaderboardEntry.save(); // Save to database
-
     return res.redirect('/leaderboard'); // Redirect to leaderboard page
   } catch (error) {
     console.error(error);
@@ -152,7 +151,7 @@ exports.getGamePage = (req, res, next) => {
         hintText:
           'Speed is key! But don’t let your fingers outrun your brain—accuracy matters too. Type like a pro, or prepare for typos!',
         computerResponseInitial:
-          'Oh no, not typing!  Sweaty palms already?  it’s just your pride on the line.',
+          'Oh no, not typing! Sweaty palms already? It’s just your pride on the line.',
         computerResponseWin:
           'Nice one! You beat the odds! Looks like you are a true champion',
         computerResponseLose:

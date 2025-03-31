@@ -150,6 +150,7 @@ input[type="file"] {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: center;
 }
 
 .dark-mode .cta-btn, .dark-mode .cta-btn-google {
@@ -199,4 +200,74 @@ p {
 
 .dark-mode .vertical-line {
   border-color: var(--bg);
+}
+
+@media (max-width: 1200px) {
+  body {
+    overflow-y: auto;
+    padding: 20px;
+    background-color: var(--bg-inverse);
+  }
+
+  .page-wrapper {
+    height: auto;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
+
+  .signup-wrapper {
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .signup-form-wrapper {
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .signup-title h1 {
+    font-size: 2.2rem;
+  }
+
+  .vertical-line {
+    display: none; /* Remove vertical line */
+  }
+
+  .google-signup {
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 2px solid var(--primary);
+  }
+
+  .dark-mode .google-signup {
+    border-top-color: var(--bg);
+  }
+
+  .form-group input {
+    padding: 0.8rem;
+  }
+
+  .btn-wrapper {
+    padding-top: 1rem;
+  }
+
+  .cta-btn, .cta-btn-google {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Add smaller screen support */
+@media (max-width: 600px) {
+  .signup-wrapper {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .signup-title h1 {
+    font-size: 1.8rem;
+  }
 }
