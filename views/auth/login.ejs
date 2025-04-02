@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/login.css" />
-    <link rel="icon" href="icons/icon.png" type="image/png" />
-    <script src="js/darkMode.js" defer></script>
-    <script
-      src="https://kit.fontawesome.com/b262aa5062.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>Login - Mind-Rush</title>
-  </head>
+<%- include('../includes/head.ejs') %>
+
   <body>
     <% if (resetRequestMessage || resetConfirmationMessage) { %>
     <div class="alert-wrapper">

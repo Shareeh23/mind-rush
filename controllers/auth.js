@@ -23,6 +23,10 @@ exports.getLogin = (req, res, next) => {
   req.session.resetRequest = null;
   req.session.resetConfirmation = null;
   return res.render('auth/login', {
+    cssFile01: 'css/login.css',
+    cssFile02: null,
+    scriptFile: null,
+    pageTitle: 'Login - Mind-Rush',
     resetRequestMessage: resetRequestMessage,
     resetConfirmationMessage: resetConfirmationMessage,
     errorMessage: '',
@@ -33,6 +37,10 @@ exports.getLogin = (req, res, next) => {
 
 exports.getSignup = (req, res, next) => {
   return res.render('auth/signup', {
+    cssFile01: 'css/signup.css',
+    cssFile02: null,
+    scriptFile: null,
+    pageTitle: 'Sign Up - Mind-Rush',
     errorMessage: null,
     oldInput: { name: '', email: '', password: '' },
     validationErrors: [],
@@ -51,6 +59,10 @@ exports.getProfile = (req, res, next) => {
   User.findOne({ _id: userId })
     .then((user) => {
       res.render('auth/profile', {
+        cssFile01: 'css/profile.css',
+        cssFile02: null,
+        scriptFile: null,
+        pageTitle: 'User Profile - Mind-Rush',
         user: user,
         errorMessage: null,
         oldInput: { name: '', email: '', password: '' },
@@ -74,6 +86,10 @@ exports.postSignup = (req, res, next) => {
 
   if (!image) {
     return res.status(422).render('auth/signup', {
+      cssFile01: 'css/signup.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'Sign Up - Mind-Rush',
       errorMessage: 'Attached file is not an image',
       oldInput: { name: name, email: email, password: password },
       validationErrors: [],
@@ -82,6 +98,10 @@ exports.postSignup = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
+      cssFile01: 'css/signup.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'Sign Up - Mind-Rush',
       errorMessage: errors.array()[0].msg,
       oldInput: { name: name, email: email, password: password },
       validationErrors: errors.array()[0].path,
@@ -127,6 +147,10 @@ exports.postLogin = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/login', {
+      cssFile01: 'css/login.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'Login - Mind-Rush',
       resetRequestMessage: null,
       resetConfirmationMessage: null,
       errorMessage: errors.array()[0].msg,
@@ -138,6 +162,10 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ name: name }).then((user) => {
     if (!user) {
       return res.status(422).render('auth/login', {
+        cssFile01: 'css/login.css',
+        cssFile02: null,
+        scriptFile: null,
+        pageTitle: 'Login - Mind-Rush',
         resetRequestMessage: null,
         resetConfirmationMessage: null,
         errorMessage: 'Invalid username',
@@ -174,6 +202,10 @@ exports.postLogin = (req, res, next) => {
           });
         }
         return res.status(422).render('auth/login', {
+          cssFile01: 'css/login.css',
+          cssFile02: null,
+          scriptFile: null,
+          pageTitle: 'Login - Mind-Rush',
           resetRequestMessage: null,
           resetConfirmationMessage: null,
           errorMessage: 'Password do not match!',
@@ -200,6 +232,10 @@ exports.postProfile = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     return res.status(422).render('auth/profile', {
+      cssFile01: 'css/profile.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'User Profile - Mind-Rush',
       user: req.user,
       errorMessage: errors.array()[0].msg,
       validationErrors: errors.array()[0].path,
@@ -230,6 +266,10 @@ exports.postProfile = (req, res, next) => {
     })
     .then((updatedUser) => {
       res.render('auth/profile', {
+        cssFile01: 'css/profile.css',
+        cssFile02: null,
+        scriptFile: null,
+        pageTitle: 'User Profile - Mind-Rush',
         user: updatedUser,
         errorMessage: null,
         oldInput: { name: '', email: '', password: '' },
@@ -252,11 +292,12 @@ exports.postDeleteProfile = (req, res, next) => {
       }
       const userEmail = user.email;
       const userName = user.name;
-      return transporter.sendMail({
-        to: userEmail,
-        from: 'mind-rush@gmail.com',
-        subject: 'Account Deleted - Mind-Rush',
-        html: `
+      return transporter
+        .sendMail({
+          to: userEmail,
+          from: 'mind-rush@gmail.com',
+          subject: 'Account Deleted - Mind-Rush',
+          html: `
           <h2>Your Mind-Rush Account Has Been Deleted</h2>
           <p>Hi ${userName},</p>
           <p>We're sorry to see you go! Your account has been successfully deleted from Mind-Rush.</p>
@@ -264,7 +305,8 @@ exports.postDeleteProfile = (req, res, next) => {
           <p>If you have any feedback or concerns, please feel free to reach out to our support team.</p>
           <p>Best regards,<br>The Mind-Rush Team.</p>
         `,
-      }).then(() => ({ userId })); 
+        })
+        .then(() => ({ userId }));
     })
     .then(({ userId }) => {
       return User.deleteOne({ _id: userId });
@@ -329,6 +371,10 @@ exports.getResetPassword = (req, res, next) => {
   })
     .then((user) => {
       return res.render('auth/reset-password', {
+        cssFile01: 'css/login.css',
+        cssFile02: null,
+        scriptFile: null,
+        pageTitle: 'Reset Password - Mind-Rush',
         userId: user._id.toString(),
         passwordToken: token,
       });

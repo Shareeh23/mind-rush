@@ -1,23 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/main.css" />
-    <link rel="icon" href="icons/icon.png" type="image/png" />
-    <script
-      src="https://kit.fontawesome.com/b262aa5062.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="js/index.js" defer></script>
-    <script src="js/timer.js" defer></script>
-    <script src="js/darkMode.js" defer></script>
-    <title>Mind-Rush</title>
-  </head>
+<%- include('views/includes/head.ejs') %>
+
   <body>
     <% if (loginMessage) { %>
     <div class="message-wrapper">
-      <div class="profile-image"><img src="/<%= profileImage %>" alt="" /></div>
+      <div class="profile-image"><img src="/<%= profileImage %>" alt="user profile image" /></div>
       <p><%= loginMessage %></p>
     </div>
     <% } %>
@@ -42,11 +28,7 @@
         </div>
         <div class="menu-links">
           <ul>
-            <li>
-              <a href="/banana-math" id="start-game" class="active"
-                >Start Game</a
-              >
-            </li>
+            <li><a href="/banana-math" id="start-game" class="active">Start Game</a></li>
             <li><a href="/leaderboard">Leaderboard</a></li>
             <% if(!isAuthenticated) { %>
             <li><a href="/login" id="login-btn">Login</a></li>

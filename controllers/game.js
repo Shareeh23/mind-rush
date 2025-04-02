@@ -5,6 +5,10 @@ exports.getIndex = (req, res, next) => {
   req.session.loginMessage = null;
   const profileImage = req.user ? req.user.image : null;
   return res.render('../index', {
+    cssFile01: 'css/main.css',
+    cssFile02: null,
+    scriptFile: 'js/index.js',
+    pageTitle: 'Mind-Rush',
     profileImage: profileImage,
     loginMessage: loginMessage
   });
@@ -31,6 +35,10 @@ exports.getLeaderboard = (req, res, next) => {
     }));    
 
       res.render('leaderboard', { 
+        cssFile01: 'css/leaderboard.css',
+        cssFile02: null,
+        scriptFile: 'js/leaderboard.js',
+        pageTitle: 'Leaderboard',
         topLeaders: leaders.slice(0, 3),  // Top 3 players
         allLeaders: leaders // All players for "View All"
       });
@@ -70,7 +78,8 @@ exports.getGamePage = (req, res, next) => {
   switch (gameType) {
     case 'banana-math':
       gameConfig = {
-        cssFile: 'css/banana-math.css',
+        cssFile01: 'css/game.css',
+        cssFile02: 'css/banana-math.css',
         scriptFile: 'js/bananaMath.js',
         pageTitle: 'Banana Math',
         gameType: 'banana-math',
@@ -90,7 +99,8 @@ exports.getGamePage = (req, res, next) => {
 
     case 'tic-tac-toe':
       gameConfig = {
-        cssFile: 'css/tic-tac-toe.css',
+        cssFile01: 'css/game.css',
+        cssFile02: 'css/tic-tac-toe.css',
         scriptFile: 'js/ticTacToe.js',
         pageTitle: 'Tic-Tac-Toe Game',
         gameType: 'tic-tac-toe',
@@ -111,7 +121,8 @@ exports.getGamePage = (req, res, next) => {
 
     case 'memory-match':
       gameConfig = {
-        cssFile: 'css/memory-match.css',
+        cssFile01: 'css/game.css',
+        cssFile02: 'css/memory-match.css',
         scriptFile: 'js/memoryMatch.js',
         pageTitle: 'Memory Match',
         gameType: 'memory-match',
@@ -143,7 +154,8 @@ exports.getGamePage = (req, res, next) => {
 
     case 'speed-typing':
       gameConfig = {
-        cssFile: 'css/speed-typing.css',
+        cssFile01: 'css/game.css',
+        cssFile02: 'css/speed-typing.css',
         scriptFile: 'js/speedTyping.js',
         pageTitle: 'Typing Test',
         gameType: 'speed-typing',
