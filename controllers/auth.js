@@ -13,51 +13,82 @@ const transporter = nodemailer.createTransport({
   port: 465,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,  
+    pass: process.env.EMAIL_PASS,
   },
 });
 
 exports.getLogin = (req, res, next) => {
-  const resetRequestMessage = req.session.resetRequest;
-  const resetConfirmationMessage = req.session.resetConfirmation;
-  req.session.resetRequest = null;
-  req.session.resetConfirmation = null;
-  return res.render('auth/login', {
-    cssFile01: 'css/login.css',
-    cssFile02: null,
-    scriptFile: null,
-    pageTitle: 'Login - Mind-Rush',
-    resetRequestMessage: resetRequestMessage,
-    resetConfirmationMessage: resetConfirmationMessage,
-    errorMessage: '',
-    validationErrors: [],
-    oldInput: { name: '', password: '' },
-  });
+  try {
+    const resetRequestMessage = req.session?.resetRequest || null;
+    const resetConfirmationMessage = req.session?.resetConfirmation || null;
+
+    if (req.session) {
+      req.session.resetRequest = null;
+      req.session.resetConfirmation = null;
+    }
+
+    return res.render('auth/login', {
+      cssFile01: 'css/login.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'Login - Mind-Rush',
+      resetRequestMessage: resetRequestMessage,
+      resetConfirmationMessage: resetConfirmationMessage,
+      errorMessage: '',
+      validationErrors: [],
+      oldInput: { name: '', password: '' },
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
 exports.getSignup = (req, res, next) => {
-  return res.render('auth/signup', {
-    cssFile01: 'css/signup.css',
-    cssFile02: null,
-    scriptFile: null,
-    pageTitle: 'Sign Up - Mind-Rush',
-    errorMessage: null,
-    oldInput: { name: '', email: '', password: '' },
-    validationErrors: [],
-  });
+  try {
+    return res.render('auth/signup', {
+      cssFile01: 'css/signup.css',
+      cssFile02: null,
+      scriptFile: null,
+      pageTitle: 'Sign Up - Mind-Rush',
+      errorMessage: null,
+      oldInput: { name: '', email: '', password: '' },
+      validationErrors: [],
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    next(error);
+  }
 };
 
 exports.getLogout = (req, res, next) => {
-  req.session.destroy((err) => {
-    console.log(err);
-    return res.redirect('/');
-  });
+  try {
+    req.session.destroy((err) => {
+      console.log(err);
+      return res.redirect('/');
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    next(error);
+  }
 };
 
 exports.getProfile = (req, res, next) => {
   const userId = req.user._id;
+
+  if (!userId) {
+    return res.status(401).redirect('/login');
+  }
+
   User.findOne({ _id: userId })
     .then((user) => {
+      if (!user) {
+        return res.status(404).render('404');
+      }
+
       res.render('auth/profile', {
         cssFile01: 'css/profile.css',
         cssFile02: null,
@@ -70,8 +101,9 @@ exports.getProfile = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      res.redirect('/login');
+      const error = new Error(err);
+      error.httpStatusCode = err.httpStatusCode || 500; 
+      next(error);
     });
 };
 
@@ -81,8 +113,6 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const image = req.file;
   const errors = validationResult(req);
-
-  console.log(image);
 
   if (!image) {
     return res.status(422).render('auth/signup', {
@@ -137,7 +167,11 @@ exports.postSignup = (req, res, next) => {
               `,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 404;
+      return next(error);
+    });
 };
 
 exports.postLogin = (req, res, next) => {
@@ -214,8 +248,9 @@ exports.postLogin = (req, res, next) => {
         });
       })
       .catch((err) => {
-        console.error('Error comparing passwords:', err);
-        return res.redirect('/login');
+        const error = new Error(err);
+        error.httpStatusCode = 404;
+        return next(error);
       });
   });
 };
@@ -277,8 +312,9 @@ exports.postProfile = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
-      res.redirect('/profile');
+      const error = new Error(err);
+      error.httpStatusCode = 404;
+      return next(error);
     });
 };
 
@@ -316,11 +352,20 @@ exports.postDeleteProfile = (req, res, next) => {
         res.redirect('/');
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 404;
+      return next(error);
+    });
 };
 
 exports.getReset = (req, res, next) => {
-  return res.render('auth/reset');
+  return res.render('auth/reset', {
+    cssFile01: 'css/login.css',
+    cssFile02: null,
+    scriptFile: null,
+    pageTitle: 'Reset - Mind-Rush',
+  });
 };
 
 exports.postReset = (req, res, next) => {
@@ -334,7 +379,12 @@ exports.postReset = (req, res, next) => {
       .then((user) => {
         if (!user) {
           console.log('No user found');
-          return res.redirect('/reset');
+          return res.redirect('/reset', {
+            cssFile01: 'css/login.css',
+            cssFile02: null,
+            scriptFile: null,
+            pageTitle: 'Reset - Mind-Rush',
+          });
         }
         user.resetToken = token;
         user.resetTokenExpiration = Date.now() + 3600000;
@@ -359,19 +409,30 @@ exports.postReset = (req, res, next) => {
                 `,
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 404;
+        return next(error);
+      });
   });
 };
 
 exports.getResetPassword = (req, res, next) => {
   const token = req.params.token;
+
   User.findOne({
     resetToken: token,
     resetTokenExpiration: { $gt: Date.now() },
   })
     .then((user) => {
+      if (!user) {
+        const error = new Error('Invalid or expired password reset token.');
+        error.httpStatusCode = 400; 
+        return next(error);
+      }
+
       return res.render('auth/reset-password', {
-        cssFile01: 'css/login.css',
+        cssFile01: '/css/login.css',
         cssFile02: null,
         scriptFile: null,
         pageTitle: 'Reset Password - Mind-Rush',
@@ -379,14 +440,18 @@ exports.getResetPassword = (req, res, next) => {
         passwordToken: token,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500; 
+      return next(error);
+    });
 };
+
 
 exports.postResetPassword = (req, res, next) => {
   const newPassword = req.body.password;
   const userId = req.body.userId;
   const passwordToken = req.body.passwordToken;
-  let resetUser;
 
   User.findOne({
     _id: userId,
@@ -394,18 +459,25 @@ exports.postResetPassword = (req, res, next) => {
     resetTokenExpiration: { $gt: Date.now() },
   })
     .then((user) => {
-      resetUser = user;
-      return bcrypt.hash(newPassword, 12);
-    })
-    .then((hashedPassword) => {
-      resetUser.password = hashedPassword;
-      resetUser.resetToken = undefined;
-      resetUser.resetTokenExpiration = undefined;
-      return resetUser.save();
+      if (!user) {
+        const error = new Error('Invalid or expired password reset token.');
+        error.httpStatusCode = 400; 
+        throw error;
+      }
+      return bcrypt.hash(newPassword, 12).then((hashedPassword) => {
+        user.password = hashedPassword;
+        user.resetToken = undefined;
+        user.resetTokenExpiration = undefined;
+        return user.save();
+      });
     })
     .then((result) => {
       req.session.resetConfirmation = `${result.name}, your password has been successfully reset.`;
       return res.redirect('/login');
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.error('Password reset error:', err);
+      err.httpStatusCode = err.httpStatusCode || 500;
+      return next(err);
+    });
 };

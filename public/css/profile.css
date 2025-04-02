@@ -164,7 +164,7 @@ body {
 .form-group input {
   width: 100%;
   padding: 1rem;
-  border: 2px solid var(--bg);
+  border: 2px solid var(--text);
   border-radius: 1rem;
   font-family: "Orbit", sans-serif;
   outline: none;

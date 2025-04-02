@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,6 +9,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const multer = require('multer');
+const compression = require('compression');
+const morgan = require('morgan');
 
 const User = require('./models/user');
 
@@ -40,7 +43,7 @@ const fileFilter = (req, file, cb) => {
     file.mimetype === 'image/png' ||
     file.mimetype === 'image/avif'
   ) {
-    console.log("File MIME type:", file.mimetype);
+    console.log('File MIME type:', file.mimetype);
     cb(null, true);
   } else {
     cb(null, false);
@@ -50,6 +53,13 @@ const fileFilter = (req, file, cb) => {
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+
+app.use(compression());
+app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
@@ -100,13 +110,17 @@ app.use(errorRoutes);
 app.use(authRoutes);
 app.use(gameRoutes);
 
+app.use((error, req, res, next) => {
+  res.redirect('500')
+})
+
 mongoose
   .connect(MONGODB_URI, {
     tls: true,
     tlsAllowInvalidCertificates: true,
   })
   .then(() => {
-    app.listen(3000);
+    app.listen(process.env.PORT || 3000);
   })
   .catch((err) => {
     console.log(err);
