@@ -104,20 +104,17 @@ document.addEventListener('DOMContentLoaded', function() {
   if (exitButton) {
     exitButton.addEventListener('click', function() {
       localStorage.removeItem('result');
-      console.log('Game state cleared');
     });
   }
 
   if(proceedBtn) {
     proceedBtn.addEventListener('click', function() {
       localStorage.removeItem('result');
-      console.log('Game state cleared');
     });
   }
 
 });
 
-// Listen for gameOver event from the game logic
 document.addEventListener('gameOver', function(e) {
   console.log('Game over event received:', e.detail.result);
   updateUIBasedOnResult();

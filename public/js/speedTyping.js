@@ -3,7 +3,7 @@ const quoteDisplayElement = document.getElementById('quoteDisplay');
 const quoteInputElement = document.getElementById('quoteInput');
 const timerElement = document.getElementById('timer');
 
-let quoteCount = 0; // Counter to track number of quotes
+let quoteCount = 0; 
 
 quoteInputElement.addEventListener('input', () => {
   const arrayQuote = quoteDisplayElement.querySelectorAll('span');
@@ -28,7 +28,7 @@ quoteInputElement.addEventListener('input', () => {
 
   if (correct) {
     quoteCount++;
-    if (quoteCount < 1) {
+    if (quoteCount < 3) {
       renderNewQuote();
     } else {
       endGame();

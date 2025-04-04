@@ -10,7 +10,7 @@ exports.getIndex = (req, res, next) => {
     scriptFile: 'js/index.js',
     pageTitle: 'Mind-Rush',
     profileImage: profileImage,
-    loginMessage: loginMessage
+    loginMessage: loginMessage,
   });
 };
 
@@ -20,30 +20,37 @@ const formatTime = (seconds) => {
   const mins = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
-  return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(
+    2,
+    '0'
+  )}:${String(secs).padStart(2, '0')}`;
 };
 
 exports.getLeaderboard = (req, res, next) => {
   Leaderboard.find()
     .populate('userId', 'name image')
     .sort({ time: 1 })
-    .then(entries => {
-      const leaders = entries.map(entry => ({
+    .then((entries) => {
+      const leaders = entries.map((entry) => ({
         username: entry.userId ? entry.userId.name : 'Unknown Player',
         formattedTime: formatTime(entry.time),
-        image: entry.userId ? entry.userId.image : 'images/random-avatar.avif'
-    }));    
+        image: entry.userId ? entry.userId.image : 'images/random-avatar.avif',
+      }));
 
-      res.render('leaderboard', { 
+      return res.render('leaderboard', {
         cssFile01: 'css/leaderboard.css',
         cssFile02: null,
         scriptFile: 'js/leaderboard.js',
         pageTitle: 'Leaderboard',
-        topLeaders: leaders.slice(0, 3),  // Top 3 players
-        allLeaders: leaders // All players for "View All"
+        topLeaders: leaders.slice(0, 3), // Top 3 players
+        allLeaders: leaders, // All players for "View All"
       });
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
 };
 
 exports.postLeaderboard = async (req, res, next) => {
@@ -65,9 +72,10 @@ exports.postLeaderboard = async (req, res, next) => {
 
     await leaderboardEntry.save(); // Save to database
     return res.redirect('/leaderboard'); // Redirect to leaderboard page
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Something went wrong' });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);;
   }
 };
 
@@ -172,7 +180,7 @@ exports.getGamePage = (req, res, next) => {
         svgPathWin: 'svgs/celebration.svg',
         svgPathLose: 'svgs/angry.svg',
         pathWin: '/leaderboard',
-        pathLose: null
+        pathLose: null,
       };
       break;
 
